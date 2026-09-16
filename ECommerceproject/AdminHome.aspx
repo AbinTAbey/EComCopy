@@ -11,175 +11,355 @@
     <link href="./assets/css/custom.css" rel="stylesheet" />
     <link href="./assets/css/owlcarousel/owl.carousel.min.css" rel="stylesheet">
     <link href="./assets/css/owlcarousel/owl.theme.default.min.css" rel="stylesheet">
-    <title>Login Page</title>
+    <title>FlipShop Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
     <style type="text/css">
-        .auto-style1 {
-            width: 42px;
+        :root {
+            --admin-bg: #f4faf9;
+            --admin-surface: #ffffff;
+            --admin-primary: #0f8a83;
+            --admin-primary-dark: #145e63;
+            --admin-ink: #1f3437;
+            --admin-muted: #5b7470;
+            --admin-line: #dce9e7;
+            --admin-soft: rgba(15, 138, 131, .1);
+            --admin-danger: #d64545;
+            --admin-danger-soft: rgba(214, 69, 69, .09);
+            --admin-shadow: 0 18px 44px rgba(20, 94, 99, .12);
         }
-        .auto-style3 {
-            width: 735px;
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            min-width: 320px;
+            margin: 0;
+            color: var(--admin-ink);
+            background: var(--admin-bg) !important;
+            font-family: "DM Sans", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
-        .auto-style4 {
-            width: 8px;
+        a { color: inherit; }
+        button, input { font: inherit; }
+        .child-menu { display: none; }
+        .parent-menu:hover .child-menu { display: block; }
+
+        /* Preserve the existing FlipShop header while bringing it into the admin palette. */
+        form > header { background: #008ecc !important; }
+        form > header + div { background: rgba(11, 18, 32, .97) !important; }
+
+        .admin-page {
+            min-height: 760px;
+            padding: 128px 22px 64px;
+            background:
+                linear-gradient(rgba(15, 138, 131, .05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 138, 131, .05) 1px, transparent 1px),
+                var(--admin-bg);
+            background-size: 32px 32px;
         }
-        .auto-style5 {
+        .admin-shell {
+            display: grid;
+            grid-template-columns: 232px minmax(0, 1fr);
             width: 100%;
-            height: 239px;
+            max-width: 1280px;
+            min-height: 660px;
+            margin: 0 auto;
+            overflow: hidden;
+            border: 1px solid var(--admin-line);
+            border-radius: 18px;
+            background: var(--admin-surface);
+            box-shadow: var(--admin-shadow);
         }
-        .auto-style6 {
-            height: 228px;
+        .admin-sidebar {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            padding: 24px 16px 18px;
+            color: #cde4e2;
+            background: #145e63;
         }
-        .auto-style7 {
+        .sidebar-heading {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            min-height: 44px;
+            padding: 0 10px 22px;
+            border-bottom: 1px solid rgba(255,255,255,.14);
+        }
+        .sidebar-mark {
+            display: grid;
+            width: 36px;
+            height: 36px;
+            flex: 0 0 36px;
+            place-items: center;
+            border-radius: 8px;
+            color: #ffffff;
+            background: var(--admin-primary);
+        }
+        .sidebar-mark svg, .nav-icon svg, .button-icon svg, .heading-icon svg { width: 20px; height: 20px; }
+        .sidebar-title {
+            font-family: "Space Grotesk", Arial, sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        .sidebar-caption { margin-top: 1px; color: rgba(205, 228, 226, .75); font-size: 11px; }
+        .sidebar-label {
+            margin: 22px 10px 9px;
+            color: rgba(205, 228, 226, .6);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+        .sidebar-nav { display: grid; gap: 5px; }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            min-height: 43px;
+            padding: 0 11px;
+            color: #bfd9d6 !important;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color .18s ease, background-color .18s ease, border-color .18s ease;
+        }
+        .sidebar-link:hover, .sidebar-link:focus-visible {
+            color: #fff !important;
+            border-color: rgba(255,255,255,.16);
+            background: rgba(255,255,255,.08);
+            outline: none;
+        }
+        .sidebar-link.is-active { color: #ffffff !important; background: var(--admin-primary); }
+        .nav-icon { display: grid; width: 20px; height: 20px; flex: 0 0 20px; place-items: center; }
+        .sidebar-logout { margin-top: auto; padding-top: 22px; }
+        .sidebar-logout .sidebar-link { color: #f2b4b0 !important; }
+        .sidebar-logout .sidebar-link:hover { color: #fff !important; background: rgba(214, 69, 69, .22); }
+
+        .admin-workspace { min-width: 0; padding: 34px 38px 42px; }
+        .workspace-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+        .mobile-sidebar-toggle {
+            display: none;
             width: 42px;
-            height: 228px;
+            height: 42px;
+            padding: 0;
+            place-items: center;
+            color: var(--admin-ink);
+            border: 1px solid var(--admin-line);
+            border-radius: 8px;
+            background: var(--admin-surface);
+            cursor: pointer;
         }
-        .auto-style8 {
-            width: 8px;
-            height: 228px;
+        .mobile-sidebar-toggle svg { width: 21px; height: 21px; }
+        .dashboard-eyebrow {
+            margin-bottom: 7px;
+            color: var(--admin-primary);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
         }
-        .dashboard-wrapper {
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-.dashboard-title {
-    font-size: 26px;
-    font-weight: 700;
-    color: #0c5273;
-    margin-bottom: 6px;
-}
-.dashboard-subtitle {
-    color: #6b7280;
-    font-size: 14px;
-    margin-bottom: 30px;
-}
-.action-cards {
-    display: flex;
-    gap: 18px;
-    flex-wrap: wrap;
-    margin-bottom: 40px;
-}
-.action-card {
-    flex: 1;
-    min-width: 200px;
-    background: #ffffff;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    padding: 22px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-.action-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-}
-.action-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
-    color: #ffffff;
-}
-.icon-category { background: linear-gradient(135deg, #008ECC, #0c5273); }
-.icon-product { background: linear-gradient(135deg, #16a34a, #15803d); }
-.icon-logout { background: linear-gradient(135deg, #dc2626, #b91c1c); }
-.action-text-title {
-    font-weight: 700;
-    color: #1f2937;
-    font-size: 15px;
-    margin-bottom: 2px;
-}
-.action-text-sub {
-    font-size: 12px;
-    color: #9ca3af;
-}
-.section-heading {
-    font-size: 18px;
-    font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.product-grid-wrapper {
-    max-width: 100%;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-    overflow: hidden;
-    border: 1px solid #e5e7eb;
-    margin-bottom: 60px;
-}
-.product-grid {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
-}
-.product-grid th {
-    background: linear-gradient(135deg, #0c5273 0%, #008ECC 100%);
-    color: #ffffff;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 0.5px;
-    padding: 14px 16px;
-    text-align: left;
-}
-.product-grid td {
-    padding: 12px 16px;
-    border-bottom: 1px solid #f0f0f0;
-    vertical-align: middle;
-    color: #333333;
-}
-.product-grid tr.alt-row {
-    background-color: #f8fafc;
-}
-.product-grid tr:hover td {
-    background-color: #eef7fc;
-    transition: background-color 0.2s ease-in-out;
-}
-.product-thumb {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-.btn-edit, .btn-delete {
-    display: inline-block;
-    padding: 6px 14px;
-    font-size: 12px;
-    font-weight: bold;
-    border-radius: 20px;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    margin-right: 6px;
-}
-.btn-edit {
-    background-color: #dbeafe;
-    color: #1d4ed8;
-}
-.btn-edit:hover {
-    background-color: #bfdbfe;
-}
-.btn-delete {
-    background-color: #fee2e2;
-    color: #b91c1c;
-}
-.btn-delete:hover {
-    background-color: #fecaca;
-}
+        .dashboard-title {
+            margin: 0;
+            color: var(--admin-ink);
+            font-family: "Space Grotesk", Arial, sans-serif;
+            font-size: clamp(26px, 3vw, 36px);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: 0;
+        }
+        .dashboard-subtitle { margin: 8px 0 0; color: var(--admin-muted); font-size: 14px; }
+        .primary-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 44px;
+            padding: 0 17px;
+            white-space: nowrap;
+            color: #ffffff !important;
+            border: 1px solid rgba(15, 138, 131, .5);
+            border-radius: 8px;
+            background: var(--admin-primary);
+            box-shadow: 0 8px 18px rgba(15, 138, 131, .22);
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform .18s ease, background-color .18s ease, box-shadow .18s ease;
+        }
+        .primary-action:hover { transform: translateY(-1px); background: var(--admin-primary-dark); box-shadow: 0 11px 22px rgba(20, 94, 99, .26); }
+        .primary-action:focus-visible { outline: 3px solid rgba(15, 138, 131, .3); outline-offset: 3px; }
+
+        .workspace-summary {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 30px;
+        }
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-height: 86px;
+            padding: 17px 19px;
+            border: 1px solid var(--admin-line);
+            border-radius: 10px;
+            background: #f2f9f8;
+        }
+        .summary-icon {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            flex: 0 0 42px;
+            place-items: center;
+            color: var(--admin-primary);
+            border-radius: 8px;
+            background: var(--admin-soft);
+        }
+        .summary-icon svg { width: 21px; height: 21px; }
+        .summary-title { margin: 0 0 3px; font-size: 13px; font-weight: 700; }
+        .summary-copy { margin: 0; color: var(--admin-muted); font-size: 12px; line-height: 1.45; }
+
+        .products-section { min-width: 0; }
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 13px;
+        }
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 0;
+            color: var(--admin-ink);
+            font-family: "Space Grotesk", Arial, sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .heading-icon { display: grid; color: var(--admin-primary); place-items: center; }
+        .section-note { color: var(--admin-muted); font-size: 12px; }
+        .product-grid-wrapper {
+            max-width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--admin-line);
+            border-radius: 10px;
+            background: var(--admin-surface);
+        }
+        .product-grid {
+            width: 100%;
+            min-width: 680px;
+            border-collapse: collapse;
+            font-family: "DM Sans", Arial, sans-serif;
+            font-size: 13px;
+        }
+        .product-grid th {
+            padding: 13px 18px;
+            color: #5b7470;
+            border-bottom: 1px solid var(--admin-line);
+            background: #f2f9f8;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .09em;
+            text-align: left;
+            text-transform: uppercase;
+        }
+        .product-grid td {
+            padding: 13px 18px;
+            color: #2c4547;
+            border-bottom: 1px solid #e4eeec;
+            vertical-align: middle;
+        }
+        .product-grid tr:last-child td { border-bottom: 0; }
+        .product-grid tr.alt-row { background: rgba(15, 138, 131, .04); }
+        .product-grid tr:hover td { background: rgba(15, 138, 131, .08); }
+        .product-grid .empty-row td { padding: 44px 20px; color: var(--admin-muted); text-align: center; }
+        .product-thumb {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border: 1px solid var(--admin-line);
+            border-radius: 8px;
+            background: #eaf3f1;
+        }
+        .btn-edit, .btn-delete {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 32px;
+            padding: 0 11px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background-color .18s ease, border-color .18s ease, color .18s ease;
+        }
+        .btn-edit { color: var(--admin-primary) !important; border: 1px solid rgba(15, 138, 131, .35); background: var(--admin-soft); }
+        .btn-edit:hover { border-color: rgba(15, 138, 131, .6); background: rgba(15, 138, 131, .16); }
+        .btn-delete { margin-left: 6px; color: #c93a3a !important; border: 1px solid rgba(214, 69, 69, .35); background: var(--admin-danger-soft); }
+        .btn-delete:hover { border-color: rgba(214, 69, 69, .6); background: rgba(214, 69, 69, .16); }
+        .btn-edit:focus-visible, .btn-delete:focus-visible { outline: 3px solid rgba(15, 138, 131, .25); outline-offset: 2px; }
+        .sidebar-backdrop { display: none; }
+
+        @media (max-width: 1023px) {
+            .admin-page { padding-top: 118px; }
+            .admin-shell { grid-template-columns: 1fr; overflow: visible; }
+            .admin-sidebar {
+                position: fixed;
+                z-index: 70;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width: 250px;
+                transform: translateX(-102%);
+                box-shadow: 18px 0 45px rgba(20, 94, 99, .35);
+                transition: transform .22s ease;
+            }
+            .admin-shell.sidebar-open .admin-sidebar { transform: translateX(0); }
+            .sidebar-backdrop {
+                position: fixed;
+                z-index: 60;
+                inset: 0;
+                display: block;
+                visibility: hidden;
+                opacity: 0;
+                border: 0;
+                background: rgba(20, 94, 99, .4);
+                transition: opacity .22s ease, visibility .22s ease;
+            }
+            .admin-shell.sidebar-open .sidebar-backdrop { visibility: visible; opacity: 1; }
+            .mobile-sidebar-toggle { display: grid; }
+            .workspace-heading { display: flex; align-items: center; gap: 13px; }
+            .admin-workspace { padding: 28px; }
+        }
+        @media (max-width: 640px) {
+            .admin-page { padding: 108px 12px 36px; }
+            .admin-shell { border-radius: 12px; }
+            .admin-workspace { padding: 22px 16px 28px; }
+            .workspace-header { align-items: flex-start; margin-bottom: 23px; }
+            .dashboard-title { font-size: 27px; }
+            .dashboard-subtitle { max-width: 220px; font-size: 13px; }
+            .primary-action { width: 44px; min-width: 44px; padding: 0; }
+            .primary-action .action-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+            .workspace-summary { grid-template-columns: 1fr; gap: 10px; }
+            .summary-item { min-height: 76px; padding: 14px; }
+            .section-note { display: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+        }
     </style>
 </head>
 <body class="bg-[#F3F3F3]">
@@ -335,391 +515,113 @@
                 </ul>
             </nav>
         </div>
-
-        <!-- Login Section -->
-       <%-- <div style="padding-top: 150px; padding-bottom: 50px;">
-
-            <table class="auto-style5">
-                <tr>
-                    <td>
-
-                        <table class="w-full">
-
-                            <!-- Title -->
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style4">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-
-                                <td class="auto-style3">
-                                    ADMIN HOME PAGE
-                                </td>
-
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <!-- Space -->
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style4">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-
-                                <td class="auto-style3">
-                                    &nbsp;
-                                </td>
-
-                                <td>&nbsp;</td>
-                                <td></td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <!-- Login Form -->
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style4">&nbsp;</td>
-                                <td class="auto-style1">&nbsp; </td>
-
-                                <td>&nbsp;</td>
-                                <td>
-                                    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Category.aspx">ADD CATEGORY</asp:HyperLink>
-                                </td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style4">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-
-                                <td>&nbsp;</td>
-                                <td>
-                                    &nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style4">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-
-                                <td>&nbsp;</td>
-                                <td>
-                                    <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/Product.aspx">ADD PRODUCT</asp:HyperLink>
-                                </td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style4">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-
-                                <td>&nbsp;</td>
-                                <td>
-                                    &nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style4">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-
-                                <td>&nbsp;</td>
-                                <td>
-                                    <asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="~/Login.aspx">Logout</asp:HyperLink>
-                                </td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style4">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-
-                                <td>&nbsp;</td>
-                                <td>
-                                    &nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style4">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-
-                                <td>&nbsp;</td>
-                                <td>
-                                    <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False"
-    DataKeyNames="product id" OnRowDeleting="GridView1_RowDeleting" Height="683px" Width="1147px">
-    <Columns>
-        <asp:BoundField DataField="product id" HeaderText="ID" />
-        <asp:BoundField DataField="category name" HeaderText="CATEGORY NAME" />
-        <asp:TemplateField HeaderText="IMAGE">
-            <ItemTemplate>
-               <img src='<%# ResolveUrl(Eval("image").ToString()) %>'
-    width="60" height="60" alt="product" />
-            </ItemTemplate>
-        </asp:TemplateField>
-        <asp:TemplateField HeaderText="ACTION">
-            <ItemTemplate>
-                <asp:HyperLink ID="lnkEdit" runat="server"
-                    NavigateUrl='<%# "~/Product.aspx?id=" + Eval("product id") %>'>Edit</asp:HyperLink>
-                &nbsp;
-                <asp:LinkButton ID="lnkDelete" runat="server" CommandName="Delete"
-                    CausesValidation="false"
-                    OnClientClick="return confirm('Delete this product?');">Delete</asp:LinkButton>
-            </ItemTemplate>
-        </asp:TemplateField>
-    </Columns>
-</asp:GridView>
-                                </td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr>
-                                <td class="auto-style6"></td>
-                                <td class="auto-style7"></td>
-                                <td class="auto-style7"></td>
-                                <td class="auto-style7"></td>
-                                <td class="auto-style7"></td>
-                                <td class="auto-style7"></td>
-                                <td class="auto-style7"></td>
-                                <td class="auto-style7"></td>
-                                <td class="auto-style7"></td>
-                                <td class="auto-style7"></td>
-                                <td class="auto-style8"></td>
-                                <td class="auto-style7"></td>
-
-                                <td class="auto-style6"></td>
-                                <td class="auto-style6">
-                                    </td>
-                                <td class="auto-style6"></td>
-                            </tr>
-
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style4">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-
-                                <td>&nbsp;</td>
-                                <td>
-                                    &nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style4">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-
-                                <td>&nbsp;</td>
-                                <td>
-                                    &nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style4">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-
-                                <td>&nbsp;</td>
-                                <td>
-                                    &nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                        </table>
-
-                    </td>
-                </tr>
-            </table>
-
-        </div>--%>
         <!-- Admin Dashboard Section -->
-<div style="padding-top: 150px; padding-bottom: 50px;">
-    <div class="dashboard-wrapper">
+        <main class="admin-page">
+            <div id="adminShell" class="admin-shell">
+                <button type="button" id="sidebarBackdrop" class="sidebar-backdrop" aria-label="Close admin navigation"></button>
+                <aside id="adminSidebar" class="admin-sidebar" aria-label="Admin navigation">
+                    <div class="sidebar-heading">
+                        <span class="sidebar-mark" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                        </span>
+                        <span>
+                            <span class="sidebar-title">FlipShop Admin</span>
+                            <span class="sidebar-caption">Store operations</span>
+                        </span>
+                    </div>
+                    <div class="sidebar-label">Workspace</div>
+                    <nav class="sidebar-nav">
+                        <a href="AdminHome.aspx" class="sidebar-link is-active" aria-current="page">
+                            <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"/></svg></span>
+                            Dashboard
+                        </a>
+                        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Category.aspx" CssClass="sidebar-link">
+                            <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h7l2 2h9v11H3V6Z"/><path d="M3 10h18"/></svg></span>
+                            Add category
+                        </asp:HyperLink>
+                        <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/Product.aspx" CssClass="sidebar-link">
+                            <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.5 7.8 7.5 4.3 7.5-4.3M12 12v9"/></svg></span>
+                            Add product
+                        </asp:HyperLink>
+                    </nav>
+                    <div class="sidebar-logout">
+                        <asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="~/Login.aspx" CssClass="sidebar-link">
+                            <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 5H5v14h5M14 8l4 4-4 4M18 12H9"/></svg></span>
+                            Logout
+                        </asp:HyperLink>
+                    </div>
+                </aside>
 
-        <div class="dashboard-title">Admin Dashboard</div>
-        <div class="dashboard-subtitle">Manage your categories, products, and store data.</div>
+                <section class="admin-workspace">
+                    <header class="workspace-header">
+                        <div class="workspace-heading">
+                            <button type="button" id="sidebarToggle" class="mobile-sidebar-toggle" aria-label="Open admin navigation" aria-controls="adminSidebar" aria-expanded="false">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+                            </button>
+                            <div>
+                                <div class="dashboard-eyebrow">Store administration</div>
+                                <h1 class="dashboard-title">Product workspace</h1>
+                                <p class="dashboard-subtitle">Manage categories and maintain your product catalogue.</p>
+                            </div>
+                        </div>
+                        <asp:HyperLink ID="HeaderAddProduct" runat="server" NavigateUrl="~/Product.aspx" CssClass="primary-action">
+                            <span class="button-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span>
+                            <span class="action-label">Add product</span>
+                        </asp:HyperLink>
+                    </header>
 
-        <div class="action-cards">
-            <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Category.aspx" CssClass="action-card">
-                <span class="action-icon icon-category">&#128193;</span>
-                <span>
-                    <div class="action-text-title">Add Category</div>
-                    <div class="action-text-sub">Create a new product category</div>
-                </span>
-            </asp:HyperLink>
+                    <div class="workspace-summary" aria-label="Quick actions">
+                        <div class="summary-item">
+                            <span class="summary-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h7l2 2h9v11H3V6Z"/><path d="M3 10h18"/></svg></span>
+                            <span><p class="summary-title">Category management</p><p class="summary-copy">Organize the catalogue before adding products.</p></span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.5 7.8 7.5 4.3 7.5-4.3M12 12v9"/></svg></span>
+                            <span><p class="summary-title">Product catalogue</p><p class="summary-copy">Review images, categories, and product actions.</p></span>
+                        </div>
+                    </div>
 
-            <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/Product.aspx" CssClass="action-card">
-                <span class="action-icon icon-product">&#128230;</span>
-                <span>
-                    <div class="action-text-title">Add Product</div>
-                    <div class="action-text-sub">List a new product for sale</div>
-                </span>
-            </asp:HyperLink>
-
-            <asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="~/Login.aspx" CssClass="action-card">
-                <span class="action-icon icon-logout">&#128274;</span>
-                <span>
-                    <div class="action-text-title">Logout</div>
-                    <div class="action-text-sub">End your admin session</div>
-                </span>
-            </asp:HyperLink>
-        </div>
-
-        <div class="section-heading">&#128717; All Products</div>
-
-        <div class="product-grid-wrapper">
-            <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False"
-                DataKeyNames="product id" OnRowDeleting="GridView1_RowDeleting"
-                CssClass="product-grid" GridLines="None"
-                ShowHeaderWhenEmpty="True" EmptyDataText="No products found."
-                AlternatingRowStyle-CssClass="alt-row">
-                <Columns>
-                    <asp:BoundField DataField="product id" HeaderText="ID" />
-                    <asp:BoundField DataField="category name" HeaderText="Category Name" />
-                    <asp:TemplateField HeaderText="Image">
-                        <ItemTemplate>
-                            <img src='<%# ResolveUrl(Eval("image").ToString()) %>'
-                                class="product-thumb" alt="product" />
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Action">
-                        <ItemTemplate>
-                            <asp:HyperLink ID="lnkEdit" runat="server"
-                                NavigateUrl='<%# "~/Product.aspx?id=" + Eval("product id") %>'
-                                CssClass="btn-edit">
-                                Edit
-                            </asp:HyperLink>
-                            <asp:LinkButton ID="lnkDelete" runat="server" CommandName="Delete"
-                                CausesValidation="false"
-                                OnClientClick="return confirm('Delete this product?');"
-                                CssClass="btn-delete">
-                                Delete
-                            </asp:LinkButton>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                </Columns>
-            </asp:GridView>
-        </div>
-
-    </div>
-</div>
+                    <section class="products-section" aria-labelledby="productsHeading">
+                        <div class="section-header">
+                            <h2 id="productsHeading" class="section-heading">
+                                <span class="heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.5 7.8 7.5 4.3 7.5-4.3M12 12v9"/></svg></span>
+                                All products
+                            </h2>
+                            <span class="section-note">Edit details or remove products from the catalogue</span>
+                        </div>
+                        <div class="product-grid-wrapper">
+                            <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False"
+                                DataKeyNames="product id" OnRowDeleting="GridView1_RowDeleting"
+                                CssClass="product-grid" GridLines="None"
+                                ShowHeaderWhenEmpty="True" EmptyDataText="No products found."
+                                AlternatingRowStyle-CssClass="alt-row"
+                                EmptyDataRowStyle-CssClass="empty-row">
+                                <Columns>
+                                    <asp:BoundField DataField="product id" HeaderText="ID" />
+                                    <asp:BoundField DataField="category name" HeaderText="Category name" />
+                                    <asp:TemplateField HeaderText="Image">
+                                        <ItemTemplate>
+                                            <img src='<%# ResolveUrl(Eval("image").ToString()) %>' class="product-thumb" alt="Product image" loading="lazy" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Actions">
+                                        <ItemTemplate>
+                                            <asp:HyperLink ID="lnkEdit" runat="server"
+                                                NavigateUrl='<%# "~/Product.aspx?id=" + Eval("product id") %>'
+                                                CssClass="btn-edit">Edit</asp:HyperLink>
+                                            <asp:LinkButton ID="lnkDelete" runat="server" CommandName="Delete"
+                                                CausesValidation="false"
+                                                OnClientClick="return confirm('Delete this product?');"
+                                                CssClass="btn-delete">Delete</asp:LinkButton>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                            </asp:GridView>
+                        </div>
+                    </section>
+                </section>
+            </div>
+        </main>
         <!-- Footer -->
         <footer class="bg-gray-200 mt-28">
             <div class="footer max-w-[1120px] m-auto p-8">
@@ -799,5 +701,34 @@
 
     <script src="./assets/js/jquery-3.6.0.min.js"></script>
     <script src="./assets/js/main.js"></script>
+    <script type="text/javascript">
+        (function () {
+            function setupAdminSidebar() {
+                var shell = document.getElementById('adminShell');
+                var toggle = document.getElementById('sidebarToggle');
+                var backdrop = document.getElementById('sidebarBackdrop');
+                if (!shell || !toggle || !backdrop) return;
+
+                function setOpen(open) {
+                    shell.classList.toggle('sidebar-open', open);
+                    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                    toggle.setAttribute('aria-label', open ? 'Close admin navigation' : 'Open admin navigation');
+                }
+
+                toggle.addEventListener('click', function () {
+                    setOpen(!shell.classList.contains('sidebar-open'));
+                });
+                backdrop.addEventListener('click', function () { setOpen(false); });
+                document.addEventListener('keydown', function (event) {
+                    if (event.key === 'Escape') setOpen(false);
+                });
+                window.addEventListener('resize', function () {
+                    if (window.innerWidth >= 1024) setOpen(false);
+                }, { passive: true });
+            }
+
+            document.addEventListener('DOMContentLoaded', setupAdminSidebar);
+        }());
+    </script>
 </body>
 </html>

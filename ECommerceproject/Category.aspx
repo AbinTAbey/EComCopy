@@ -11,19 +11,461 @@
     <link href="./assets/css/custom.css" rel="stylesheet" />
     <link href="./assets/css/owlcarousel/owl.carousel.min.css" rel="stylesheet">
     <link href="./assets/css/owlcarousel/owl.theme.default.min.css" rel="stylesheet">
-    <title>Login Page</title>
+    <title>Add Category — FlipShop Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
     <style type="text/css">
-        .auto-style6 {
-            left: -1px;
-            top: 0px;
+        :root {
+            --admin-bg: #f4faf9;
+            --admin-surface: #ffffff;
+            --admin-primary: #0f8a83;
+            --admin-primary-dark: #145e63;
+            --admin-ink: #1f3437;
+            --admin-muted: #5b7470;
+            --admin-line: #dce9e7;
+            --admin-soft: rgba(15, 138, 131, .1);
+            --admin-danger: #d64545;
+            --admin-danger-soft: rgba(214, 69, 69, .09);
+            --admin-shadow: 0 18px 44px rgba(20, 94, 99, .12);
         }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            min-width: 320px;
+            margin: 0;
+            color: var(--admin-ink);
+            background: var(--admin-bg) !important;
+            font-family: "DM Sans", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: inherit; }
+        button, input { font: inherit; }
+        .child-menu { display: none; }
+        .parent-menu:hover .child-menu { display: block; }
+
+        /* Preserve the existing FlipShop header while bringing it into the admin palette. */
+        form > header { background: #008ecc !important; }
+        form > header + div { background: rgba(11, 18, 32, .97) !important; }
+
+        .admin-page {
+            min-height: 760px;
+            padding: 128px 22px 64px;
+            background:
+                linear-gradient(rgba(15, 138, 131, .05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 138, 131, .05) 1px, transparent 1px),
+                var(--admin-bg);
+            background-size: 32px 32px;
+        }
+        .admin-shell {
+            display: grid;
+            grid-template-columns: 232px minmax(0, 1fr);
+            width: 100%;
+            max-width: 1280px;
+            min-height: 660px;
+            margin: 0 auto;
+            overflow: hidden;
+            border: 1px solid var(--admin-line);
+            border-radius: 18px;
+            background: var(--admin-surface);
+            box-shadow: var(--admin-shadow);
+        }
+        .admin-sidebar {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            padding: 24px 16px 18px;
+            color: #cde4e2;
+            background: #145e63;
+        }
+        .sidebar-heading {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            min-height: 44px;
+            padding: 0 10px 22px;
+            border-bottom: 1px solid rgba(255,255,255,.14);
+        }
+        .sidebar-mark {
+            display: grid;
+            width: 36px;
+            height: 36px;
+            flex: 0 0 36px;
+            place-items: center;
+            border-radius: 8px;
+            color: #ffffff;
+            background: var(--admin-primary);
+        }
+        .sidebar-mark svg, .nav-icon svg, .button-icon svg, .heading-icon svg { width: 20px; height: 20px; }
+        .sidebar-title {
+            font-family: "Space Grotesk", Arial, sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        .sidebar-caption { margin-top: 1px; color: rgba(205, 228, 226, .75); font-size: 11px; }
+        .sidebar-label {
+            margin: 22px 10px 9px;
+            color: rgba(205, 228, 226, .6);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+        .sidebar-nav { display: grid; gap: 5px; }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            min-height: 43px;
+            padding: 0 11px;
+            color: #bfd9d6 !important;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color .18s ease, background-color .18s ease, border-color .18s ease;
+        }
+        .sidebar-link:hover, .sidebar-link:focus-visible {
+            color: #fff !important;
+            border-color: rgba(255,255,255,.16);
+            background: rgba(255,255,255,.08);
+            outline: none;
+        }
+        .sidebar-link.is-active { color: #ffffff !important; background: var(--admin-primary); }
+        .nav-icon { display: grid; width: 20px; height: 20px; flex: 0 0 20px; place-items: center; }
+        .sidebar-logout { margin-top: auto; padding-top: 22px; }
+        .sidebar-logout .sidebar-link { color: #f2b4b0 !important; }
+        .sidebar-logout .sidebar-link:hover { color: #fff !important; background: rgba(214, 69, 69, .22); }
+
+        .admin-workspace { min-width: 0; padding: 34px 38px 42px; }
+        .workspace-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+        .mobile-sidebar-toggle {
+            display: none;
+            width: 42px;
+            height: 42px;
+            padding: 0;
+            place-items: center;
+            color: var(--admin-ink);
+            border: 1px solid var(--admin-line);
+            border-radius: 8px;
+            background: var(--admin-surface);
+            cursor: pointer;
+        }
+        .mobile-sidebar-toggle svg { width: 21px; height: 21px; }
+        .dashboard-eyebrow {
+            margin-bottom: 7px;
+            color: var(--admin-primary);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+        .dashboard-title {
+            margin: 0;
+            color: var(--admin-ink);
+            font-family: "Space Grotesk", Arial, sans-serif;
+            font-size: clamp(26px, 3vw, 36px);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: 0;
+        }
+        .dashboard-subtitle { margin: 8px 0 0; color: var(--admin-muted); font-size: 14px; }
+        .primary-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 44px;
+            padding: 0 17px;
+            white-space: nowrap;
+            color: #ffffff !important;
+            border: 1px solid rgba(15, 138, 131, .5);
+            border-radius: 8px;
+            background: var(--admin-primary);
+            box-shadow: 0 8px 18px rgba(15, 138, 131, .22);
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform .18s ease, background-color .18s ease, box-shadow .18s ease;
+        }
+        .primary-action:hover { transform: translateY(-1px); background: var(--admin-primary-dark); box-shadow: 0 11px 22px rgba(20, 94, 99, .26); }
+        .primary-action:focus-visible { outline: 3px solid rgba(15, 138, 131, .3); outline-offset: 3px; }
+
+        .workspace-summary {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 30px;
+        }
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-height: 86px;
+            padding: 17px 19px;
+            border: 1px solid var(--admin-line);
+            border-radius: 10px;
+            background: #f2f9f8;
+        }
+        .summary-icon {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            flex: 0 0 42px;
+            place-items: center;
+            color: var(--admin-primary);
+            border-radius: 8px;
+            background: var(--admin-soft);
+        }
+        .summary-icon svg { width: 21px; height: 21px; }
+        .summary-title { margin: 0 0 3px; font-size: 13px; font-weight: 700; }
+        .summary-copy { margin: 0; color: var(--admin-muted); font-size: 12px; line-height: 1.45; }
+
+        .products-section { min-width: 0; }
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 13px;
+        }
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 0;
+            color: var(--admin-ink);
+            font-family: "Space Grotesk", Arial, sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .heading-icon { display: grid; color: var(--admin-primary); place-items: center; }
+        .section-note { color: var(--admin-muted); font-size: 12px; }
+        .product-grid-wrapper {
+            max-width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--admin-line);
+            border-radius: 10px;
+            background: var(--admin-surface);
+        }
+        .product-grid {
+            width: 100%;
+            min-width: 680px;
+            border-collapse: collapse;
+            font-family: "DM Sans", Arial, sans-serif;
+            font-size: 13px;
+        }
+        .product-grid th {
+            padding: 13px 18px;
+            color: #5b7470;
+            border-bottom: 1px solid var(--admin-line);
+            background: #f2f9f8;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .09em;
+            text-align: left;
+            text-transform: uppercase;
+        }
+        .product-grid td {
+            padding: 13px 18px;
+            color: #2c4547;
+            border-bottom: 1px solid #e4eeec;
+            vertical-align: middle;
+        }
+        .product-grid tr:last-child td { border-bottom: 0; }
+        .product-grid tr.alt-row { background: rgba(15, 138, 131, .04); }
+        .product-grid tr:hover td { background: rgba(15, 138, 131, .08); }
+        .product-grid .empty-row td { padding: 44px 20px; color: var(--admin-muted); text-align: center; }
+        .product-thumb {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border: 1px solid var(--admin-line);
+            border-radius: 8px;
+            background: #eaf3f1;
+        }
+        .btn-edit, .btn-delete {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 32px;
+            padding: 0 11px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background-color .18s ease, border-color .18s ease, color .18s ease;
+        }
+        .btn-edit { color: var(--admin-primary) !important; border: 1px solid rgba(15, 138, 131, .35); background: var(--admin-soft); }
+        .btn-edit:hover { border-color: rgba(15, 138, 131, .6); background: rgba(15, 138, 131, .16); }
+        .btn-delete { margin-left: 6px; color: #c93a3a !important; border: 1px solid rgba(214, 69, 69, .35); background: var(--admin-danger-soft); }
+        .btn-delete:hover { border-color: rgba(214, 69, 69, .6); background: rgba(214, 69, 69, .16); }
+        .btn-edit:focus-visible, .btn-delete:focus-visible { outline: 3px solid rgba(15, 138, 131, .25); outline-offset: 2px; }
+        .sidebar-backdrop { display: none; }
+
+        @media (max-width: 1023px) {
+            .admin-page { padding-top: 118px; }
+            .admin-shell { grid-template-columns: 1fr; overflow: visible; }
+            .admin-sidebar {
+                position: fixed;
+                z-index: 70;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width: 250px;
+                transform: translateX(-102%);
+                box-shadow: 18px 0 45px rgba(20, 94, 99, .35);
+                transition: transform .22s ease;
+            }
+            .admin-shell.sidebar-open .admin-sidebar { transform: translateX(0); }
+            .sidebar-backdrop {
+                position: fixed;
+                z-index: 60;
+                inset: 0;
+                display: block;
+                visibility: hidden;
+                opacity: 0;
+                border: 0;
+                background: rgba(20, 94, 99, .4);
+                transition: opacity .22s ease, visibility .22s ease;
+            }
+            .admin-shell.sidebar-open .sidebar-backdrop { visibility: visible; opacity: 1; }
+            .mobile-sidebar-toggle { display: grid; }
+            .workspace-heading { display: flex; align-items: center; gap: 13px; }
+            .admin-workspace { padding: 28px; }
+        }
+        @media (max-width: 640px) {
+            .admin-page { padding: 108px 12px 36px; }
+            .admin-shell { border-radius: 12px; }
+            .admin-workspace { padding: 22px 16px 28px; }
+            .workspace-header { align-items: flex-start; margin-bottom: 23px; }
+            .dashboard-title { font-size: 27px; }
+            .dashboard-subtitle { max-width: 220px; font-size: 13px; }
+            .primary-action { width: 44px; min-width: 44px; padding: 0; }
+            .primary-action .action-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+            .workspace-summary { grid-template-columns: 1fr; gap: 10px; }
+            .summary-item { min-height: 76px; padding: 14px; }
+            .section-note { display: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+        }
+
+        /* ---- Add Category form ---- */
+        .form-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 22px; align-items: start; }
+        .form-card {
+            padding: 26px 26px 28px;
+            border: 1px solid var(--admin-line);
+            border-radius: 12px;
+            background: var(--admin-surface);
+            box-shadow: 0 10px 26px rgba(20, 94, 99, .07);
+        }
+        .form-field { margin-bottom: 20px; }
+        .form-field label,
+        .form-field span.field-label {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--admin-ink);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+        .field-input {
+            width: 100%;
+            min-height: 44px;
+            padding: 0 13px;
+            color: var(--admin-ink);
+            border: 1px solid var(--admin-line);
+            border-radius: 8px;
+            background: #fbfefd;
+            font-size: 14px;
+            transition: border-color .18s ease, box-shadow .18s ease;
+        }
+        .field-input:focus {
+            border-color: var(--admin-primary);
+            box-shadow: 0 0 0 3px rgba(15, 138, 131, .16);
+            outline: none;
+        }
+        .field-hint { margin: 7px 0 0; color: var(--admin-muted); font-size: 12px; }
+        .file-field {
+            padding: 16px;
+            border: 1px dashed rgba(15, 138, 131, .4);
+            border-radius: 10px;
+            background: rgba(15, 138, 131, .05);
+        }
+        .file-field input[type="file"] { max-width: 100%; color: var(--admin-ink); font-size: 13px; }
+        .file-field input[type="file"]::file-selector-button {
+            margin-right: 11px;
+            min-height: 34px;
+            padding: 0 13px;
+            color: #fff;
+            border: 0;
+            border-radius: 7px;
+            background: var(--admin-primary);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .form-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--admin-line); }
+        .submit-button {
+            min-height: 46px;
+            padding: 0 22px;
+            color: #ffffff !important;
+            border: 1px solid rgba(15, 138, 131, .5) !important;
+            border-radius: 8px;
+            background: var(--admin-primary) !important;
+            box-shadow: 0 8px 18px rgba(15, 138, 131, .22);
+            font-family: "Space Grotesk", Arial, sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            cursor: pointer;
+            transition: transform .18s ease, background-color .18s ease;
+        }
+        .submit-button:hover { transform: translateY(-1px); background: var(--admin-primary-dark) !important; }
+        .ghost-link { color: var(--admin-primary) !important; font-size: 13px; font-weight: 700; text-decoration: none; }
+        .ghost-link:hover { text-decoration: underline; }
+        .status-note {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 11px 15px;
+            color: var(--admin-primary-dark) !important;
+            border: 1px solid rgba(15, 138, 131, .3);
+            border-radius: 8px;
+            background: var(--admin-soft);
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .guide-card {
+            padding: 20px;
+            border: 1px solid var(--admin-line);
+            border-radius: 12px;
+            background: #f2f9f8;
+        }
+        .guide-title { display: flex; align-items: center; gap: 9px; margin: 0 0 12px; font-family: "Space Grotesk", Arial, sans-serif; font-size: 15px; font-weight: 700; }
+        .guide-title svg { width: 19px; height: 19px; color: var(--admin-primary); }
+        .guide-list { margin: 0; padding-left: 18px; list-style: disc outside; color: var(--admin-muted); font-size: 13px; line-height: 1.65; }
+        @media (max-width: 1023px) { .form-layout { grid-template-columns: minmax(0, 1fr); } }
+        @media (max-width: 640px) { .form-card { padding: 20px 16px 22px; } }
+
     </style>
 </head>
 <body class="bg-[#F3F3F3]">
     <form id="form1" runat="server">
 
         <!-- Header Section -->
-        <header class="auto-style6">
+        <header class="w-full bg-[#008ECC] flex justify-center h-23 sm:h-23 md:h-23 lg:h-16 fixed top-0 z-50">
             <div class="w-screen  max-w-[1120px]">
                 <div class="flex mt-2 sm:mt-2 md:mt-2 lg:mt-4">
                     <div class="menu-bar float-left cursor-pointer text-white ml-3 m-0 mr-4 h-8 w-8 openNav">
@@ -172,79 +614,112 @@
                 </ul>
             </nav>
         </div>
+        <!-- Admin Dashboard Section -->
+        <!-- Add Category Section -->
+        <main class="admin-page">
+            <div id="adminShell" class="admin-shell">
+                <button type="button" id="sidebarBackdrop" class="sidebar-backdrop" aria-label="Close admin navigation"></button>
+                <aside id="adminSidebar" class="admin-sidebar" aria-label="Admin navigation">
+                    <div class="sidebar-heading">
+                        <span class="sidebar-mark" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                        </span>
+                        <span>
+                            <span class="sidebar-title">FlipShop Admin</span>
+                            <span class="sidebar-caption">Store operations</span>
+                        </span>
+                    </div>
+                    <div class="sidebar-label">Workspace</div>
+                    <nav class="sidebar-nav">
+                        <a href="AdminHome.aspx" class="sidebar-link">
+                            <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"/></svg></span>
+                            Dashboard
+                        </a>
+                        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Category.aspx" CssClass="sidebar-link is-active">
+                            <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h7l2 2h9v11H3V6Z"/><path d="M3 10h18"/></svg></span>
+                            Add category
+                        </asp:HyperLink>
+                        <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/Product.aspx" CssClass="sidebar-link">
+                            <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.5 7.8 7.5 4.3 7.5-4.3M12 12v9"/></svg></span>
+                            Add product
+                        </asp:HyperLink>
+                    </nav>
+                    <div class="sidebar-logout">
+                        <asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="~/Login.aspx" CssClass="sidebar-link">
+                            <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 5H5v14h5M14 8l4 4-4 4M18 12H9"/></svg></span>
+                            Logout
+                        </asp:HyperLink>
+                    </div>
+                </aside>
 
-       
-        <!-- Category Section -->
+                <section class="admin-workspace">
+                    <header class="workspace-header">
+                        <div class="workspace-heading">
+                            <button type="button" id="sidebarToggle" class="mobile-sidebar-toggle" aria-label="Open admin navigation" aria-controls="adminSidebar" aria-expanded="false">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+                            </button>
+                            <div>
+                                <div class="dashboard-eyebrow">Catalogue setup</div>
+                                <h1 class="dashboard-title">Add category</h1>
+                                <p class="dashboard-subtitle">Create a category before assigning products to it.</p>
+                            </div>
+                        </div>
+                        <asp:HyperLink ID="BackToDashboard" runat="server" NavigateUrl="~/AdminHome.aspx" CssClass="primary-action">
+                            <span class="button-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 6l-6 6 6 6"/></svg></span>
+                            <span class="action-label">Back to dashboard</span>
+                        </asp:HyperLink>
+                    </header>
 
-<div style="padding-top: 150px; padding-bottom: 80px;">
+                    <div class="form-layout">
+                        <div class="form-card">
+                            <h2 class="section-heading" style="margin-bottom: 20px;">
+                                <span class="heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h7l2 2h9v11H3V6Z"/><path d="M3 10h18"/></svg></span>
+                                Category details
+                            </h2>
 
-    <div style="width: 450px; margin: auto; background-color: white; padding: 40px; border-radius: 15px;">
+                            <!-- Category Name -->
+                            <div class="form-field">
+                                <asp:Label ID="lblCategoryName" runat="server" AssociatedControlID="txtCategoryName" CssClass="field-label" Text="Category Name"></asp:Label>
+                                <asp:TextBox ID="txtCategoryName" runat="server" Width="100%" CssClass="field-input" placeholder="e.g. Electronics"></asp:TextBox>
+                                <p class="field-hint">Use a short, shopper-friendly name.</p>
+                            </div>
 
-        <h2 style="text-align: center; margin-bottom: 35px;">
-            ADD CATEGORY
-        </h2>
+                            <!-- Category Photo -->
+                            <div class="form-field">
+                                <asp:Label ID="lblCategoryPhoto" runat="server" AssociatedControlID="fuCategoryPhoto" CssClass="field-label" Text="Category Photo"></asp:Label>
+                                <div class="file-field">
+                                    <asp:FileUpload ID="fuCategoryPhoto" runat="server" />
+                                    <p class="field-hint">Square images around 600x600 px look best.</p>
+                                </div>
+                            </div>
 
+                            <!-- Add Category Button -->
+                            <div class="form-actions">
+                                <asp:Button ID="btnAddCategory" runat="server" Text="ADD CATEGORY" OnClick="btnAddCategory_Click" CssClass="submit-button" UseSubmitBehavior="true" />
+                                <asp:HyperLink ID="CancelLink" runat="server" NavigateUrl="~/AdminHome.aspx" CssClass="ghost-link">Cancel</asp:HyperLink>
+                            </div>
 
-        <!-- Category Name -->
+                            <div>
+                                <asp:Label ID="lblMessage" runat="server" Visible="False" CssClass="status-note">Message</asp:Label>
+                            </div>
+                        </div>
 
-        <div style="margin-bottom: 25px;">
+                        <aside class="guide-card">
+                            <h3 class="guide-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+                                Before you save
+                            </h3>
+                            <ul class="guide-list">
+                                <li>Keep category names unique across the store.</li>
+                                <li>Upload a clear image with a plain background.</li>
+                                <li>New categories appear on the product form right away.</li>
+                            </ul>
+                        </aside>
+                    </div>
+                </section>
+            </div>
+        </main>
 
-            <asp:Label ID="lblCategoryName"
-                runat="server"
-                Text="Category Name">
-            </asp:Label>
-
-            <br />
-
-            <asp:TextBox ID="txtCategoryName"
-                runat="server"
-                Width="100%">
-            </asp:TextBox>
-
-        </div>
-
-
-        <!-- Category Photo -->
-
-        <div style="margin-bottom: 30px;">
-
-            <asp:Label ID="lblCategoryPhoto"
-                runat="server"
-                Text="Category Photo">
-            </asp:Label>
-
-            <br />
-
-            <asp:FileUpload ID="fuCategoryPhoto"
-                runat="server" />
-
-        </div>
-
-
-        <!-- Add Category Button -->
-
-        <div style="text-align: center;">
-
-            <asp:Button ID="btnAddCategory"
-                runat="server"
-                Text="ADD CATEGORY"
-                OnClick="btnAddCategory_Click" BackColor="#CCFFFF" BorderColor="#003366" />
-
-        </div>
-
-
-        <br />
-
-        <div style="text-align: center;">
-
-            <asp:Label ID="lblMessage"
-                runat="server" Visible="False">Message</asp:Label>
-
-        </div>
-
-    </div>
-
-</div>
         <!-- Footer -->
         <footer class="bg-gray-200 mt-28">
             <div class="footer max-w-[1120px] m-auto p-8">
@@ -324,6 +799,34 @@
 
     <script src="./assets/js/jquery-3.6.0.min.js"></script>
     <script src="./assets/js/main.js"></script>
-</body>
-</html>
+    <script type="text/javascript">
+        (function () {
+            function setupAdminSidebar() {
+                var shell = document.getElementById('adminShell');
+                var toggle = document.getElementById('sidebarToggle');
+                var backdrop = document.getElementById('sidebarBackdrop');
+                if (!shell || !toggle || !backdrop) return;
+
+                function setOpen(open) {
+                    shell.classList.toggle('sidebar-open', open);
+                    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                    toggle.setAttribute('aria-label', open ? 'Close admin navigation' : 'Open admin navigation');
+                }
+
+                toggle.addEventListener('click', function () {
+                    setOpen(!shell.classList.contains('sidebar-open'));
+                });
+                backdrop.addEventListener('click', function () { setOpen(false); });
+                document.addEventListener('keydown', function (event) {
+                    if (event.key === 'Escape') setOpen(false);
+                });
+                window.addEventListener('resize', function () {
+                    if (window.innerWidth >= 1024) setOpen(false);
+                }, { passive: true });
+            }
+
+            document.addEventListener('DOMContentLoaded', setupAdminSidebar);
+        }());
+</body >
+</html >
 

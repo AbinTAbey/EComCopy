@@ -11,29 +11,197 @@
     <link href="./assets/css/custom.css" rel="stylesheet" />
     <link href="./assets/css/owlcarousel/owl.carousel.min.css" rel="stylesheet">
     <link href="./assets/css/owlcarousel/owl.theme.default.min.css" rel="stylesheet">
-    <title>Login Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    <title>Add product · FlipShop admin</title>
     <style type="text/css">
-        .auto-style1 {
-            width: 42px;
+        :root {
+            --canvas: #F4F6F8;
+            --card: #FFFFFF;
+            --line: #E2E7EC;
+            --ink: #16202A;
+            --muted: #64748B;
+            --brand: #007DB8;
+            --brand-dim: #E7F3FA;
+            --go: #12805C;
+            --go-dark: #0E6A4B;
         }
-        .auto-style3 {
-            width: 735px;
+
+        .ap-page, .ap-page input, .ap-page select, .ap-page textarea, .ap-page button {
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--ink);
         }
-        .auto-style4 {
-            width: 289px;
+
+        .ap-page {
+            background: var(--canvas);
         }
-        .auto-style5 {
-            width: 289px;
-            height: 30px;
+
+        .ap-heading {
+            font-family: 'Manrope', 'Inter', sans-serif;
         }
-        .auto-style6 {
-            height: 30px;
+
+        .ap-crumb {
+            font-size: 13px;
+            color: var(--muted);
+            letter-spacing: .01em;
         }
-        .auto-style7 {
+
+        .ap-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+        }
+
+        .ap-field-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .ap-hint {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .ap-input, .ap-select, .ap-textarea {
             width: 100%;
-            margin-left: 8px;
+            box-sizing: border-box;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            padding: 10px 12px;
+            font-size: 14px;
+            background: #fff;
+            transition: border-color .15s ease, box-shadow .15s ease;
         }
-        
+
+        .ap-input:focus, .ap-select:focus, .ap-textarea:focus {
+            outline: none;
+            border-color: var(--brand);
+            box-shadow: 0 0 0 3px var(--brand-dim);
+        }
+
+        .ap-textarea {
+            resize: vertical;
+            min-height: 110px;
+            line-height: 1.5;
+        }
+
+        .ap-amount-wrap {
+            position: relative;
+        }
+
+        .ap-amount-wrap .ap-input {
+            padding-left: 26px;
+        }
+
+        .ap-amount-prefix {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: var(--muted);
+            pointer-events: none;
+        }
+
+        .ap-dropzone {
+            border: 1.5px dashed var(--line);
+            border-radius: 12px;
+            background: var(--canvas);
+            padding: 22px 16px;
+            text-align: center;
+            position: relative;
+            transition: border-color .15s ease, background-color .15s ease;
+        }
+
+        .ap-dropzone.is-drag {
+            border-color: var(--brand);
+            background: var(--brand-dim);
+        }
+
+        .ap-dropzone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .ap-dropzone-icon {
+            width: 34px;
+            height: 34px;
+            margin: 0 auto 10px;
+            color: var(--brand);
+        }
+
+        .ap-dropzone-title {
+            font-size: 13.5px;
+            font-weight: 600;
+        }
+
+        .ap-dropzone-sub {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 3px;
+        }
+
+        .ap-preview {
+            margin-top: 14px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            overflow: hidden;
+            display: none;
+            background: #fff;
+        }
+
+        .ap-preview.has-image {
+            display: block;
+        }
+
+        .ap-preview img {
+            display: block;
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+        }
+
+        .ap-preview-name {
+            font-size: 12px;
+            color: var(--muted);
+            padding: 8px 10px;
+            border-top: 1px solid var(--line);
+            word-break: break-all;
+        }
+
+        .ap-submit {
+            background: var(--go);
+            color: #fff;
+            border: none;
+            border-radius: 9px;
+            padding: 11px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: background-color .15s ease, transform .08s ease;
+        }
+
+        .ap-submit:hover {
+            background: var(--go-dark);
+        }
+
+        .ap-submit:active {
+            transform: translateY(1px);
+        }
+
+        .ap-status {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--go);
+        }
     </style>
 </head>
 <body class="bg-[#F3F3F3]">
@@ -190,185 +358,89 @@
             </nav>
         </div>
 
-        <!-- Login Section -->
-        <div style="padding-top: 150px; padding-bottom: 50px;">
+        <!-- Add Product Section -->
+        <main class="ap-page" style="padding-top: 128px; padding-bottom: 64px;">
+            <div class="max-w-[900px] mx-auto px-4">
 
-            <table class="w-full">
-                <tr>
-                    <td>
+                <p class="ap-crumb">Product management</p>
+             <%--   <h1 class="ap-heading text-[26px] font-bold mt-1 mb-8">Add a new product</h1>--%>
+                <h1 class="ap-heading text-[26px] font-bold mt-1" style="margin-bottom: 20px;">
+    Add a new product
+</h1>
 
-                        <table class="w-full">
+                <div class="ap-card p-5 sm:p-6 md:p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
 
-                            <!-- Title -->
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
+                        <!-- Image upload -->
+                        <div class="md:col-span-2">
+                            <span class="ap-field-label">Product image</span>
+                            <div class="ap-dropzone" id="apDropzone">
+                                <svg class="ap-dropzone-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
+                                </svg>
+                                <p class="ap-dropzone-title">Drop an image, or click to browse</p>
+                                <p class="ap-dropzone-sub">PNG or JPG, up to 5&nbsp;MB</p>
+                                <asp:FileUpload ID="FileUpload1" runat="server" CssClass="ap-file-input" />
+                            </div>
+                            <div class="ap-preview" id="apPreview">
+                                <img id="apPreviewImg" src="" alt="Selected product preview" />
+                                <p class="ap-preview-name" id="apPreviewName"></p>
+                            </div>
+                        </div>
 
-                                <td class="auto-style3">
-                                    PRODUCT MANAGEMENT - ADD&nbsp; PRODUCT</td>
+                        <!-- Fields -->
+                        <div class="md:col-span-3">
+                            <div class="grid grid-cols-1 gap-5">
 
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
+                                <div>
+                                    <label for="<%= TextBox1.ClientID %>" class="ap-field-label">Product name</label>
+                                    <asp:TextBox ID="TextBox1" runat="server" CssClass="ap-input" placeholder="e.g. Organic Rolled Oats, 1kg"></asp:TextBox>
+                                </div>
 
-                            <!-- Space -->
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
+                                <div>
+                                    <label for="<%= DropDownList1.ClientID %>" class="ap-field-label">Category</label>
+                                    <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True" CssClass="ap-select">
+                                        <asp:ListItem Value="1">Shoes</asp:ListItem>
+                                        <asp:ListItem Value="2">Fashion</asp:ListItem>
+                                        <asp:ListItem Value="3">Electronics</asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
 
-                                <td class="auto-style3">
-                                    &nbsp;
-                                </td>
+                                <div>
+                                    <label for="<%= TextBox2.ClientID %>" class="ap-field-label">Description</label>
+                                    <asp:TextBox ID="TextBox2" runat="server" TextMode="MultiLine" CssClass="ap-textarea" placeholder="What buyers should know before purchasing"></asp:TextBox>
+                                    <p class="ap-hint">Keep it short — key ingredients, size, or fit works best.</p>
+                                </div>
 
-                                <td>&nbsp;</td>
-                                <td></td>
-                                <td>&nbsp;</td>
-                            </tr>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="<%= TextBox3.ClientID %>" class="ap-field-label">Price</label>
+                                        <div class="ap-amount-wrap">
+                                            <span class="ap-amount-prefix">$</span>
+                                            <asp:TextBox ID="TextBox3" runat="server" CssClass="ap-input" placeholder="0.00"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="<%= TextBox4.ClientID %>" class="ap-field-label">Quantity</label>
+                                        <asp:TextBox ID="TextBox4" runat="server" CssClass="ap-input" placeholder="0"></asp:TextBox>
+                                    </div>
+                                </div>
 
-                            <!-- Login Form -->
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
+                            </div>
 
-                                <td class="auto-style3">
+                            <div class="flex items-center justify-between mt-8 pt-6" style="border-top: 1px solid var(--line);">
+                                <asp:Label ID="Label1" runat="server" Text="Label" CssClass="ap-status" Visible="False"></asp:Label>
+                                <asp:Button ID="Button1" runat="server" CssClass="ap-submit" OnClick="Button1_Click" Text="Add product" />
+                            </div>
+                        </div>
 
-                                    <table class="auto-style7">
-
-                                        <!-- User / Admin -->
-                                        <tr>
-                                            <td class="auto-style4">
-                                                Product Name</td>
-
-                                            <td>
-                                                <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="auto-style4">
-                                                Category </td>
-                                            <td>
-                                                <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True">
-                                                    <asp:ListItem Value="1">Shoes</asp:ListItem>
-                                                    <asp:ListItem Value="2">Fashion</asp:ListItem>
-                                                    <asp:ListItem Value="3">Electronics</asp:ListItem>
-                                                </asp:DropDownList>
-                                            </td>
-                                        </tr>
-
-                                        <!-- User fields -->
-
-                                        <tr>
-                                            <td class="auto-style4">
-                                                Description</td>
-                                            <td>
-                                                <asp:TextBox ID="TextBox2" runat="server" TextMode="MultiLine" Height="97px" Width="388px"></asp:TextBox>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="auto-style5">
-                                                Price</td>
-                                            <td class="auto-style6">
-                                                <asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
-                                            </td>
-                                        </tr>
-
-                                        <%--<tr>
-                                            <td class="auto-style8" colspan="2">
-
-                                                &nbsp;</td>
-                                        </tr>--%>
-
-                                        <!-- Sign In Button -->
-                                        <tr>
-                                            <td class="auto-style4">
-                                                Quantity</td>
-
-                                            <td>
-                                                <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Status -->
-                                        <tr>
-                                            <td class="auto-style4">
-                                                Product Image</td>
-                                            <td>
-                                                <asp:FileUpload ID="FileUpload1" runat="server" />
-                                            </td>
-                                        </tr>
-
-                                        <!-- Sign Up -->
-                                        <tr>
-                                            <td class="auto-style4">
-                                                &nbsp;</td>
-                                            <td>&nbsp;</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="auto-style4">
-                                                <asp:Label ID="Label1" runat="server" Text="Label" Visible="False"></asp:Label>
-                                            </td>
-
-                                            <td>
-                                                <asp:Button ID="Button1" runat="server" BackColor="#CCFFCC" OnClick="Button1_Click" Text="ADD PRODUCT" />
-                                            </td>
-                                        </tr>
-
-                                    </table>
-
-                                </td>
-
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                        </table>
-
-                    </td>
-                </tr>
-            </table>
-
-        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
 
         <!-- Footer -->
-        <footer class="bg-gray-200 mt-28">
+        <footer class="bg-gray-200">
             <div class="footer max-w-[1120px] m-auto p-8">
                 <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
                     <div>
@@ -446,6 +518,54 @@
 
     <script src="./assets/js/jquery-3.6.0.min.js"></script>
     <script src="./assets/js/main.js"></script>
+    <script>
+        (function () {
+            var dropzone = document.getElementById('apDropzone');
+            var fileInput = dropzone ? dropzone.querySelector('input[type="file"]') : null;
+            var preview = document.getElementById('apPreview');
+            var previewImg = document.getElementById('apPreviewImg');
+            var previewName = document.getElementById('apPreviewName');
+
+            if (!dropzone || !fileInput) { return; }
+
+            function showPreview(file) {
+                if (!file) { return; }
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImg.src = e.target.result;
+                    previewName.textContent = file.name;
+                    preview.classList.add('has-image');
+                };
+                reader.readAsDataURL(file);
+            }
+
+            fileInput.addEventListener('change', function () {
+                if (fileInput.files && fileInput.files[0]) {
+                    showPreview(fileInput.files[0]);
+                }
+            });
+
+            ['dragenter', 'dragover'].forEach(function (evt) {
+                dropzone.addEventListener(evt, function (e) {
+                    e.preventDefault();
+                    dropzone.classList.add('is-drag');
+                });
+            });
+
+            ['dragleave', 'drop'].forEach(function (evt) {
+                dropzone.addEventListener(evt, function (e) {
+                    e.preventDefault();
+                    dropzone.classList.remove('is-drag');
+                });
+            });
+
+            dropzone.addEventListener('drop', function (e) {
+                if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    fileInput.files = e.dataTransfer.files;
+                    showPreview(e.dataTransfer.files[0]);
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
-

@@ -11,18 +11,431 @@
     <link href="./assets/css/owlcarousel/owl.carousel.min.css" rel="stylesheet">
     <link href="./assets/css/owlcarousel/owl.theme.default.min.css" rel="stylesheet">
     <title>Login Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet">
     <style type="text/css">
-        .auto-style1 {
-            width: 42px;
+        :root {
+            --fs-primary: #087eae;
+            --fs-primary-deep: #075d84;
+            --fs-primary-soft: #eaf7fc;
+            --fs-ink: #102a3a;
+            --fs-muted: #667987;
+            --fs-line: #dce8ee;
+            --fs-surface: #ffffff;
+            --fs-danger: #b42318;
+            --fs-danger-bg: #fff2f0;
         }
-        .auto-style3 {
-            width: 735px;
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            min-width: 320px;
+            color: var(--fs-ink);
+            background: #f4f9fb;
+            font-family: "Inter", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
-        .auto-style4 {
-            width: 289px;
+
+        button, input { font: inherit; }
+
+        .brand-font { font-family: "Manrope", Arial, sans-serif; }
+
+        .auth-main {
+            position: relative;
+            isolation: isolate;
+            min-height: 720px;
+            padding: 150px 20px 72px;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 12% 22%, rgba(8, 142, 204, .08), transparent 28%),
+                linear-gradient(180deg, #f8fcfd 0%, #eef7fa 100%);
         }
-        .auto-style5 {
-            width: 100px;
+
+        .auth-main::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            inset: 102px 0 auto;
+            height: 1px;
+            background: rgba(8, 126, 174, .08);
+        }
+
+        .auth-layout {
+            width: 100%;
+            max-width: 1080px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(0, .9fr) minmax(390px, 480px);
+            align-items: center;
+            gap: clamp(52px, 8vw, 108px);
+        }
+
+        .auth-intro { max-width: 470px; }
+
+        .auth-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 22px;
+            color: var(--fs-primary-deep);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .auth-eyebrow::before {
+            content: "";
+            width: 28px;
+            height: 2px;
+            border-radius: 999px;
+            background: var(--fs-primary);
+        }
+
+        .auth-title {
+            margin: 0;
+            color: #0c2637;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: clamp(38px, 5vw, 58px);
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -.035em;
+        }
+
+        .auth-copy {
+            max-width: 430px;
+            margin: 22px 0 30px;
+            color: var(--fs-muted);
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        .trust-list {
+            display: grid;
+            gap: 14px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .trust-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #3f5968;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .trust-icon {
+            display: grid;
+            width: 30px;
+            height: 30px;
+            flex: 0 0 30px;
+            place-items: center;
+            color: var(--fs-primary);
+            border: 1px solid #cce6f0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .8);
+        }
+
+        .auth-card {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border: 1px solid rgba(203, 220, 228, .9);
+            border-radius: 22px;
+            background: rgba(255, 255, 255, .94);
+            box-shadow: 0 24px 70px rgba(27, 73, 94, .13), 0 2px 8px rgba(27, 73, 94, .05);
+        }
+
+        .auth-card::before {
+            content: "";
+            display: block;
+            height: 4px;
+            background: var(--fs-primary);
+        }
+
+        .auth-card-inner { padding: 34px 38px 36px; }
+
+        .auth-card-heading { margin-bottom: 25px; }
+
+        .auth-card-heading h2 {
+            margin: 0 0 7px;
+            color: #112d3d;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -.02em;
+        }
+
+        .auth-card-heading p {
+            margin: 0;
+            color: var(--fs-muted);
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        .login-mode-label {
+            display: block;
+            margin: 0 0 9px;
+            color: #314b5b;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .login-mode {
+            width: 100% !important;
+            margin: 0 0 24px;
+            border-collapse: separate;
+            border-spacing: 4px;
+            border: 1px solid var(--fs-line);
+            border-radius: 12px;
+            background: #edf4f7;
+            table-layout: fixed;
+        }
+
+        .login-mode tbody, .login-mode tr { width: 100%; }
+
+        .login-mode td {
+            position: relative;
+            width: 50%;
+            padding: 0;
+            text-align: center;
+        }
+
+        .login-mode input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+        }
+
+        .login-mode label {
+            display: block;
+            padding: 10px 14px;
+            cursor: pointer;
+            color: #637784;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: color .2s ease, background-color .2s ease, box-shadow .2s ease;
+        }
+
+        .login-mode input:checked + label {
+            color: var(--fs-primary-deep);
+            border-color: rgba(204, 225, 234, .9);
+            background: var(--fs-surface);
+            box-shadow: 0 3px 10px rgba(34, 77, 97, .09);
+        }
+
+        .login-mode input:focus-visible + label {
+            outline: 3px solid rgba(8, 142, 204, .2);
+            outline-offset: 1px;
+        }
+
+        .field-group { margin-bottom: 18px; }
+
+        .field-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #314b5b;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .field-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .field-icon {
+            position: absolute;
+            left: 14px;
+            z-index: 1;
+            display: grid;
+            width: 19px;
+            height: 19px;
+            place-items: center;
+            color: #718895;
+            pointer-events: none;
+        }
+
+        .field-icon svg, .password-toggle svg { width: 19px; height: 19px; }
+
+        .auth-input {
+            width: 100%;
+            height: 50px;
+            padding: 0 45px 0 44px;
+            color: #173445;
+            border: 1px solid #ccdce4;
+            border-radius: 10px;
+            outline: none;
+            background: #fbfdfe;
+            font-size: 14px;
+            transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+        }
+
+        .auth-input::placeholder { color: #9aabb4; }
+
+        .auth-input:hover { border-color: #a9c4d0; }
+
+        .auth-input:focus {
+            border-color: var(--fs-primary);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(8, 142, 204, .11);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 7px;
+            display: grid;
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            place-items: center;
+            cursor: pointer;
+            color: #607986;
+            border: 0;
+            border-radius: 8px;
+            background: transparent;
+            transition: color .2s ease, background-color .2s ease;
+        }
+
+        .password-toggle:hover { color: var(--fs-primary-deep); background: var(--fs-primary-soft); }
+        .password-toggle:focus-visible { outline: 3px solid rgba(8, 142, 204, .2); }
+        .eye-off { display: none; }
+        .password-toggle.is-visible .eye-on { display: none; }
+        .password-toggle.is-visible .eye-off { display: block; }
+
+        .auth-submit {
+            width: 100%;
+            height: 50px;
+            margin-top: 5px;
+            cursor: pointer;
+            color: #fff;
+            border: 1px solid var(--fs-primary-deep) !important;
+            border-radius: 10px;
+            background: var(--fs-primary) !important;
+            box-shadow: 0 10px 22px rgba(8, 126, 174, .22);
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: .01em;
+            transition: transform .18s ease, background-color .18s ease, box-shadow .18s ease;
+        }
+
+        .auth-submit:hover {
+            transform: translateY(-1px);
+            background: var(--fs-primary-deep) !important;
+            box-shadow: 0 13px 26px rgba(8, 93, 132, .25);
+        }
+
+        .auth-submit:active { transform: translateY(0); box-shadow: 0 6px 14px rgba(8, 93, 132, .2); }
+        .auth-submit:focus-visible { outline: 3px solid rgba(8, 142, 204, .25); outline-offset: 3px; }
+
+        .status-message {
+            display: block;
+            margin-top: 17px;
+            padding: 12px 14px 12px 40px;
+            color: var(--fs-danger) !important;
+            border: 1px solid #f3c8c3;
+            border-radius: 10px;
+            background: var(--fs-danger-bg);
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .status-wrap { position: relative; }
+
+        .status-wrap:has(.status-message)::before {
+            content: "!";
+            position: absolute;
+            z-index: 1;
+            top: 27px;
+            left: 15px;
+            display: grid;
+            width: 17px;
+            height: 17px;
+            place-items: center;
+            color: #fff;
+            border-radius: 50%;
+            background: var(--fs-danger);
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .register-row {
+            margin-top: 22px;
+            padding-top: 20px;
+            text-align: center;
+            border-top: 1px solid #e7eff2;
+            color: var(--fs-muted);
+            font-size: 13px;
+        }
+
+        .registration-option { display: none; }
+        .registration-option.is-active { display: block; animation: fade-in .22s ease both; }
+
+        .registration-link {
+            margin-left: 3px;
+            color: var(--fs-primary-deep) !important;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .registration-link:hover { color: var(--fs-primary) !important; text-decoration: underline; text-underline-offset: 3px; }
+
+        .secure-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            margin-top: 18px;
+            color: #82939d;
+            font-size: 11px;
+        }
+
+        .secure-note svg { width: 14px; height: 14px; }
+
+        .child-menu { display: none; }
+        .parent-menu:hover .child-menu { display: block; }
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(3px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 1023px) {
+            .auth-main { padding-top: 130px; }
+            .auth-layout { max-width: 520px; grid-template-columns: 1fr; gap: 34px; }
+            .auth-intro { text-align: center; margin: 0 auto; }
+            .auth-eyebrow { margin-bottom: 14px; }
+            .auth-title { font-size: 39px; }
+            .auth-copy { margin: 14px auto 0; }
+            .trust-list { display: none; }
+        }
+
+        @media (max-width: 560px) {
+            .auth-main { min-height: 650px; padding: 122px 14px 44px; }
+            .auth-layout { gap: 25px; }
+            .auth-title { font-size: 31px; }
+            .auth-copy { font-size: 14px; line-height: 1.65; }
+            .auth-card { border-radius: 16px; }
+            .auth-card-inner { padding: 26px 20px 27px; }
+            .auth-card-heading h2 { font-size: 22px; }
+            .auth-input, .auth-submit { height: 48px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
         }
     </style>
 </head>
@@ -181,227 +594,147 @@
         </div>
 
         <!-- Login Section -->
-        <div style="padding-top: 150px; padding-bottom: 50px;">
+        <main class="auth-main">
+            <div class="auth-layout">
+                <section class="auth-intro" aria-labelledby="login-title">
+                    <div class="auth-eyebrow">Secure account access</div>
+                    <h1 id="login-title" class="auth-title">Welcome back to FlipShop.</h1>
+                    <p class="auth-copy">Sign in to manage your orders, save your favourites, and continue shopping with a faster checkout.</p>
+                    <ul class="trust-list" aria-label="Account benefits">
+                        <li>
+                            <span class="trust-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>
+                            </span>
+                            Protected account access
+                        </li>
+                        <li>
+                            <span class="trust-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18v13H3z"/><path d="M3 10h18M7 15h3"/></svg>
+                            </span>
+                            Quick and secure checkout
+                        </li>
+                        <li>
+                            <span class="trust-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M12 3v18"/><circle cx="12" cy="12" r="9"/></svg>
+                            </span>
+                            One account for every order
+                        </li>
+                    </ul>
+                </section>
 
-            <table class="w-full">
-                <tr>
-                    <td>
+                <section class="auth-card" aria-labelledby="signin-heading">
+                    <div class="auth-card-inner">
+                        <div class="auth-card-heading">
+                            <h2 id="signin-heading">Sign in</h2>
+                            <p>Choose your account type and enter your details.</p>
+                        </div>
 
-                        <table class="w-full">
+                        <label class="login-mode-label">Sign in as</label>
+                        <asp:RadioButtonList
+                            ID="RadioButtonList1"
+                            runat="server"
+                            RepeatDirection="Horizontal"
+                            AutoPostBack="True"
+                            OnSelectedIndexChanged="RadioButtonList1_SelectedIndexChanged"
+                            Width="127px"
+                            CssClass="login-mode"
+                            aria-label="Choose account type">
+                            <asp:ListItem Text="Customer" Value="User" Selected="True"></asp:ListItem>
+                            <asp:ListItem Text="Admin" Value="Admin"></asp:ListItem>
+                        </asp:RadioButtonList>
 
-                            <!-- Title -->
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
+                        <asp:Panel ID="UserPanel" runat="server">
+                            <div class="field-group">
+                                <label class="field-label" for="<%= TextBox1.ClientID %>">Username</label>
+                                <div class="field-wrap">
+                                    <span class="field-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>
+                                    </span>
+                                    <asp:TextBox ID="TextBox1" runat="server" CssClass="auth-input" placeholder="Enter your username" autocomplete="username"></asp:TextBox>
+                                </div>
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label" for="<%= TextBox2.ClientID %>">Password</label>
+                                <div class="field-wrap">
+                                    <span class="field-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+                                    </span>
+                                    <asp:TextBox ID="TextBox2" runat="server" TextMode="Password" CssClass="auth-input" placeholder="Enter your password" autocomplete="current-password"></asp:TextBox>
+                                    <button type="button" id="passwordToggle" class="password-toggle" aria-label="Show password" aria-pressed="false">
+                                        <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+                                        <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m3 3 18 18M10.6 10.7a2 2 0 0 0 2.7 2.7M9.9 5.1A10.8 10.8 0 0 1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-2.1 3.1M6.2 6.2C3.5 8 2 12 2 12s3.5 7 10 7a9.8 9.8 0 0 0 3.8-.8"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </asp:Panel>
 
-                                <td class="auto-style3">
-                                    SIGN IN
-                                </td>
+                        <asp:Panel ID="AdminPanel" runat="server" Visible="false">
+                            <div class="field-group">
+                                <label class="field-label" for="<%= TextBox3.ClientID %>">Admin name</label>
+                                <div class="field-wrap">
+                                    <span class="field-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>
+                                    </span>
+                                    <asp:TextBox ID="TextBox3" runat="server" CssClass="auth-input" placeholder="Enter admin name" autocomplete="username"></asp:TextBox>
+                                </div>
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label" for="<%= TextBox4.ClientID %>">Admin email</label>
+                                <div class="field-wrap">
+                                    <span class="field-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+                                    </span>
+                                    <asp:TextBox ID="TextBox4" runat="server" CssClass="auth-input" placeholder="Enter admin email" TextMode="Email" autocomplete="email"></asp:TextBox>
+                                </div>
+                            </div>
+                        </asp:Panel>
 
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
+                        <asp:Button
+                            ID="Button1"
+                            runat="server"
+                            OnClick="Button1_Click"
+                            Text="Sign In"
+                            CssClass="auth-submit" />
 
-                            <!-- Space -->
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
+                        <div class="status-wrap" role="status" aria-live="polite">
+                            <asp:Label
+                                ID="Label1"
+                                runat="server"
+                                Text=""
+                                Visible="False"
+                                CssClass="status-message">
+                            </asp:Label>
+                        </div>
 
-                                <td class="auto-style3">
-                                    &nbsp;
-                                </td>
+                        <div class="register-row">
+                            <div id="customerRegistration" class="registration-option">
+                                New to FlipShop?
+                                <asp:HyperLink
+                                    ID="HyperLink1"
+                                    runat="server"
+                                    NavigateUrl="User.aspx"
+                                    Text="Create customer account"
+                                    CssClass="registration-link">
+                                </asp:HyperLink>
+                            </div>
+                            <div id="adminRegistration" class="registration-option">
+                                Need admin access?
+                                <asp:HyperLink
+                                    ID="HyperLink2"
+                                    runat="server"
+                                    NavigateUrl="~/AdminReg.aspx"
+                                    CssClass="registration-link">Register as admin</asp:HyperLink>
+                            </div>
+                        </div>
 
-                                <td>&nbsp;</td>
-                                <td></td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <!-- Login Form -->
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-                                <td class="auto-style1">&nbsp;</td>
-
-                                <td class="auto-style3">
-
-                                    <table class="w-full">
-
-                                        <!-- User / Admin -->
-                                        <tr>
-                                            <td class="auto-style4">
-                                                Login As</td>
-
-                                            <td>
-                                                <asp:RadioButtonList
-                                                    ID="RadioButtonList1"
-                                                    runat="server"
-                                                    RepeatDirection="Horizontal"
-                                                    AutoPostBack="True"
-                                                    OnSelectedIndexChanged="RadioButtonList1_SelectedIndexChanged"
-                                                    Width="127px">
-                                                    <asp:ListItem Text="User" Value="User" Selected="True"></asp:ListItem>
-                                                    <asp:ListItem Text="Admin" Value="Admin"></asp:ListItem>
-                                                </asp:RadioButtonList>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="auto-style4">
-                                                &nbsp;</td>
-                                            <td>&nbsp;</td>
-                                        </tr>
-
-                                        <!-- User fields -->
-                                        <tr>
-                                            <td class="auto-style4" colspan="2">
-                                                <asp:Panel ID="UserPanel" runat="server">
-                                                    <table class="w-full">
-                                                        <tr>
-                                                            <td class="auto-style5">Username</td>
-                                                            <td>
-                                                                <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="auto-style5">&nbsp;</td>
-                                                            <td>&nbsp;</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="auto-style5">Password</td>
-                                                            <td>
-                                                                <asp:TextBox ID="TextBox2" runat="server" TextMode="Password"></asp:TextBox>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="auto-style5">&nbsp;</td>
-                                                            <td>&nbsp;</td>
-                                                        </tr>
-                                                    </table>
-                                                </asp:Panel>
-
-                                                <!-- Admin fields (hidden until Admin is selected) -->
-                                                <asp:Panel ID="AdminPanel" runat="server" Visible="false">
-                                                    <table class="w-full">
-                                                        <tr>
-                                                            <td class="auto-style5">Admin Name</td>
-                                                            <td>
-                                                                <asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="auto-style5">&nbsp;</td>
-                                                            <td>&nbsp;</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="auto-style5">Admin Email</td>
-                                                            <td>
-                                                                <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="auto-style5">&nbsp;</td>
-                                                            <td>&nbsp;</td>
-                                                        </tr>
-                                                    </table>
-                                                </asp:Panel>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Sign In Button -->
-                                        <tr>
-                                            <td class="auto-style4">
-                                                <asp:Button
-                                                    ID="Button1"
-                                                    runat="server"
-                                                    BackColor="#FFFF66"
-                                                    BorderColor="#0066FF"
-                                                    OnClick="Button1_Click"
-                                                    Text="Sign In" />
-                                            </td>
-
-                                            <td>
-                                                &nbsp;</td>
-                                        </tr>
-
-                                        <!-- Status -->
-                                        <tr>
-                                            <td class="auto-style4">
-                                                <asp:Label
-                                                    ID="Label1"
-                                                    runat="server"
-                                                    Text=""
-                                                    Visible="False">
-                                                </asp:Label>
-                                            </td>
-                                            <td>&nbsp;</td>
-                                        </tr>
-
-                                        <!-- Sign Up -->
-                                        <tr>
-                                            <td class="auto-style4">
-                                                New User?
-                                                <asp:HyperLink
-                                                    ID="HyperLink1"
-                                                    runat="server"
-                                                    NavigateUrl="User.aspx"
-                                                    Text=" Sign Up">
-                                                </asp:HyperLink>
-                                            </td>
-
-                                            <td>
-                                                <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/AdminReg.aspx">Sign Up as Admin</asp:HyperLink>
-                                            </td>
-                                        </tr>
-
-                                    </table>
-
-                                </td>
-
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                        </table>
-
-                    </td>
-                </tr>
-            </table>
-
-        </div>
+                        <div class="secure-note">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+                            Your sign-in details are securely protected
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
 
         <!-- Footer -->
         <footer class="bg-gray-200 mt-28">
@@ -482,5 +815,40 @@
 
     <script src="./assets/js/jquery-3.6.0.min.js"></script>
     <script src="./assets/js/main.js"></script>
+    <script type="text/javascript">
+        (function () {
+            function updateAccountMode() {
+                var selector = document.getElementById('<%= RadioButtonList1.ClientID %>');
+                var customerRegistration = document.getElementById('customerRegistration');
+                var adminRegistration = document.getElementById('adminRegistration');
+                if (!selector || !customerRegistration || !adminRegistration) return;
+
+                var selected = selector.querySelector('input:checked');
+                var isAdmin = selected && selected.value === 'Admin';
+                customerRegistration.classList.toggle('is-active', !isAdmin);
+                adminRegistration.classList.toggle('is-active', !!isAdmin);
+            }
+
+            function setupPasswordToggle() {
+                var toggle = document.getElementById('passwordToggle');
+                var password = document.getElementById('<%= TextBox2.ClientID %>');
+                if (!toggle || !password) return;
+
+                toggle.addEventListener('click', function () {
+                    var showPassword = password.type === 'password';
+                    password.type = showPassword ? 'text' : 'password';
+                    toggle.classList.toggle('is-visible', showPassword);
+                    toggle.setAttribute('aria-pressed', showPassword ? 'true' : 'false');
+                    toggle.setAttribute('aria-label', showPassword ? 'Hide password' : 'Show password');
+                    password.focus();
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                updateAccountMode();
+                setupPasswordToggle();
+            });
+        }());
+    </script>
 </body>
 </html>
