@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="cart.aspx.cs" Inherits="ECommerceproject.cart" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="cart.aspx.cs" Inherits="ECommerceproject.cart" %>
 
 <!DOCTYPE html>
 
@@ -298,7 +298,7 @@
                                         <li><a href="Filter.aspx" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Shop Page</a></li>
                                         <li><a href="ProductDetails.aspx" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Shop Single Page</a></li>
                                         <li><a href="cart.aspx" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Cart Page</a></li>
-                                        <li><a href="checkout.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Checkout Page</a></li>
+                                        <li><a href="Checkout.aspx" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Checkout Page</a></li>
                                    </ul>
                               </div>
                          </div>
@@ -373,7 +373,7 @@
                             </div> 
                             <div class="place-order mt-3">
                               <div class="flex space-x-2 justify-center">
-                                   <a href="checkout.html" class="w-full">
+                                   <a href="Checkout.aspx" class="w-full">
                                    <button
                                      type="button"
                                      data-mdb-ripple="true"
