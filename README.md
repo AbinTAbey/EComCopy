@@ -1,4 +1,4 @@
-# E-Commerce Web Application
+# FlipShop : E-Commerce Web Application
 
 A web-based shopping application built with **ASP.NET Web Forms, C#, SQL Server, and Windows Communication Foundation (WCF)**. The project demonstrates an end-to-end shopping workflow, from browsing products and managing a cart to simulated payment processing and order confirmation.
 
