@@ -220,7 +220,7 @@
                     </div>
                     <!-- Logo  -->
                     <div class="logo flex justify-center mr-10">
-                        <a href="index.html" class="max-w-full text-white font-bold text-[22px]">
+                        <a href="Home.aspx" class="max-w-full text-white font-bold text-[22px]">
                             FlipShop
                         </a>
                     </div>
@@ -569,3 +569,4 @@
     </script>
 </body>
 </html>
+

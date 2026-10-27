@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AdminHome.aspx.cs" Inherits="ECommerceproject.Admin" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AdminHome.aspx.cs" Inherits="ECommerceproject.Admin" %>
 
 
 <!DOCTYPE html>
@@ -378,7 +378,7 @@
                     </div>
                     <!-- Logo  -->
                     <div class="logo flex justify-center mr-10">
-                        <a href="index.html" class="max-w-full text-white font-bold text-[22px]">
+                        <a href="Home.aspx" class="max-w-full text-white font-bold text-[22px]">
                             FlipShop
                         </a>
                     </div>
@@ -387,7 +387,7 @@
                         <div class="search-box h-10 flex">
                             <input type="text"
                                    class="w-full p-0 border-none border-transparent focus:border-transparent focus:ring-0"
-                                   placeholder="Search essentials, groceries, and more …">
+                                   placeholder="Search essentials, groceries, and more â€¦">
                             <div class="search-list w-6 h-6 mt-1.5"></div>
                         </div>
                     </div>
@@ -422,7 +422,7 @@
                     <div class="search-box h-10 flex">
                         <input type="text"
                                class="w-full border-transparent focus:border-transparent focus:ring-0 border-none p-0"
-                               placeholder="Search essentials, groceries, and more …">
+                               placeholder="Search essentials, groceries, and more â€¦">
                         <div class="search-list mr-2 w-6 h-6 mt-1.5"></div>
                     </div>
                 </div>
@@ -543,6 +543,10 @@
                             <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.5 7.8 7.5 4.3 7.5-4.3M12 12v9"/></svg></span>
                             Add product
                         </asp:HyperLink>
+                        <a href="Feedback.aspx" class="sidebar-link">
+                            <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z"/></svg></span>
+                            Feedback
+                        </a>
                     </nav>
                     <div class="sidebar-logout">
                         <asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="~/Login.aspx" CssClass="sidebar-link">
@@ -693,7 +697,7 @@
                 </div>
             </div>
             <div class="copy-right text-center pb-3 pt-3 border-t border-gray-300">
-                <p class="text-[13px]">© 2022 All rights reserved.</p>
+                <p class="text-[13px]">Â© 2022 All rights reserved.</p>
             </div>
         </footer>
 
@@ -732,3 +736,4 @@
     </script>
 </body>
 </html>
+

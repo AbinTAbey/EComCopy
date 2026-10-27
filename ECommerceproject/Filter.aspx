@@ -166,7 +166,7 @@
                     </div>
                     <!-- Logo  -->
                     <div class="logo flex justify-center mr-10">
-                         <a href="index.html" class="max-w-full text-white font-bold text-[22px]">
+                         <a href="Home.aspx" class="max-w-full text-white font-bold text-[22px]">
                                FlipShop
                          </a>
                     </div>
@@ -177,22 +177,22 @@
                               <form action="" class="p-1 pl-5 w-[95%]">
                                    <input type="text"
                                         class="w-full p-0 border-none border-transparent focus:border-transparent focus:ring-0"
-                                        placeholder="Search essentials, groceries, and more …">
+                                        placeholder="Search essentials, groceries, and more â€¦">
                               </form>
                               <div class="search-list w-6 h-6 mt-1.5"></div>
                          </div>
                     </div>
                     <!-- Login -->
                     <div class="login mt-1 mr-2 sm:mr-3 md:mr-3 lg:mr-8">
-                         <a href="Login.aspx" class="text-sm text-white flex">
+                         <asp:LinkButton ID="lnkLoginProfile" runat="server" OnClick="lnkLoginProfile_Click" CssClass="text-sm text-white flex" UseSubmitBehavior="false">
                               <span><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20"
                                         fill="currentColor">
                                         <path fill-rule="evenodd"
                                              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
                                              clip-rule="evenodd" />
                                    </svg></span>
-                              <span class="hidden md:hidden sm:hidden lg:block  ml-2 mt-[2px]">Sign in / Sign up</span>
-                         </a>
+                              <span class="hidden md:hidden sm:hidden lg:block  ml-2 mt-[2px]"><asp:Literal ID="litProfileName" runat="server" Text="Sign in / Sign up"></asp:Literal></span>
+                         </asp:LinkButton>
                     </div>
                     <!-- Cart -->
                     <div class="cart mt-[5px]">
@@ -215,7 +215,7 @@
                          <form action="" class="p-1 pl-5 w-full">
                               <input type="text"
                                    class="w-full border-transparent focus:border-transparent focus:ring-0 border-none p-0"
-                                   placeholder="Search essentials, groceries, and more …">
+                                   placeholder="Search essentials, groceries, and more â€¦">
                          </form>
                          <div class="search-list mr-2 w-6 h-6 mt-1.5"></div>
                     </div>
@@ -642,10 +642,11 @@
                </div>
           </div>
           <div class="copy-right text-center pb-3 pt-3 border-t border-gray-300">
-               <p class="text-[13px]">© 2022 All rights reserved.</p>
+               <p class="text-[13px]">Â© 2022 All rights reserved.</p>
           </div>
      </footer>
          </form>
      <script src="./assets/js/jquery-3.6.0.min.js"></script>
      <script src="./assets/js/main.js"></script>
 </html>
+

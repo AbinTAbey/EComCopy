@@ -60,6 +60,8 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
@@ -113,11 +115,14 @@
     <Content Include="Category.aspx" />
     <Content Include="Checkout.aspx" />
     <Content Include="checkout.html" />
+    <Content Include="Contactus.aspx" />
+    <Content Include="Feedback.aspx" />
     <Content Include="Filter.aspx" />
     <Content Include="fliter.html" />
     <Content Include="index.html" />
     <Content Include="Login.aspx" />
     <Content Include="log.html" />
+    <Content Include="Payment.aspx" />
     <Content Include="Product.aspx" />
     <Content Include="product.html" />
     <Content Include="ProductDetails.aspx" />
@@ -131,6 +136,8 @@
     <Content Include="verify.html" />
     <Content Include="Web.config" />
     <Content Include="WebForm1.aspx" />
+    <Content Include="OrderSuccess.aspx" />
+    <Content Include="appSettings.secrets.config.example" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminHome.aspx.cs">
@@ -168,7 +175,21 @@
     <Compile Include="Checkout.aspx.designer.cs">
       <DependentUpon>Checkout.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contactus.aspx.cs">
+      <DependentUpon>Contactus.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contactus.aspx.designer.cs">
+      <DependentUpon>Contactus.aspx</DependentUpon>
+    </Compile>
     <Compile Include="DBConnection.cs" />
+    <Compile Include="Feedback.aspx.cs">
+      <DependentUpon>Feedback.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Feedback.aspx.designer.cs">
+      <DependentUpon>Feedback.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Filter.aspx.cs">
       <DependentUpon>Filter.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -189,6 +210,13 @@
     </Compile>
     <Compile Include="MasterPage.Master.designer.cs">
       <DependentUpon>MasterPage.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Payment.aspx.cs">
+      <DependentUpon>Payment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Payment.aspx.designer.cs">
+      <DependentUpon>Payment.aspx</DependentUpon>
     </Compile>
     <Compile Include="Product.aspx.cs">
       <DependentUpon>Product.aspx</DependentUpon>
@@ -219,6 +247,10 @@
     <Compile Include="Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
+    <Compile Include="IOrderService.cs" />
+    <Compile Include="OrderService.svc.cs">
+      <DependentUpon>OrderService.svc</DependentUpon>
+    </Compile>
     <Compile Include="WebForm1.aspx.cs">
       <DependentUpon>WebForm1.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -226,6 +258,7 @@
     <Compile Include="WebForm1.aspx.designer.cs">
       <DependentUpon>WebForm1.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EmailService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".git\COMMIT_EDITMSG" />
@@ -357,6 +390,15 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="OrderSuccess.aspx.cs">
+      <DependentUpon>OrderSuccess.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrderSuccess.aspx.designer.cs">
+      <DependentUpon>OrderSuccess.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".git\objects\info\" />

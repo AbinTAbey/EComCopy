@@ -15,6 +15,7 @@ namespace ECommerceproject
         {
             if (!IsPostBack)
             {
+                HandleLoginProfileState();
                 LoadProducts();
             }
         }
@@ -190,6 +191,35 @@ namespace ECommerceproject
                     nextClass);
 
             litPagination.Text = sb.ToString();
+        }
+
+        private void HandleLoginProfileState()
+        {
+            if (lnkLoginProfile == null) return;
+            if (Session["UserId"] != null && Session["Username"] != null)
+            {
+                string fullName = Session["Username"].ToString();
+                string firstName = fullName.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[0];
+                litProfileName.Text = firstName;
+            }
+            else
+            {
+                litProfileName.Text = "Sign in / Sign up";
+            }
+        }
+
+        protected void lnkLoginProfile_Click(object sender, EventArgs e)
+        {
+            if (Session["UserId"] != null && Session["Username"] != null)
+            {
+                Session.Clear();
+                Session.Abandon();
+                Response.Redirect("Home.aspx");
+            }
+            else
+            {
+                Response.Redirect("Login.aspx");
+            }
         }
     }
 }

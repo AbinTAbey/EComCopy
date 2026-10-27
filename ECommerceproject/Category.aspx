@@ -1,6 +1,9 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Category.aspx.cs" Inherits="ECommerceproject.Category" %>
 
 
+
+
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -456,8 +459,121 @@
         .guide-title { display: flex; align-items: center; gap: 9px; margin: 0 0 12px; font-family: "Space Grotesk", Arial, sans-serif; font-size: 15px; font-weight: 700; }
         .guide-title svg { width: 19px; height: 19px; color: var(--admin-primary); }
         .guide-list { margin: 0; padding-left: 18px; list-style: disc outside; color: var(--admin-muted); font-size: 13px; line-height: 1.65; }
+        /* ---- Category list, filters, table ---- */
+        .list-card {
+            margin-top: 26px;
+            padding: 24px 24px 12px;
+            border: 1px solid var(--admin-line);
+            border-radius: 14px;
+            background: #ffffff;
+            box-shadow: 0 18px 40px -32px rgba(20, 94, 99, .5);
+        }
+        .list-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: 18px; }
+        .filter-bar { display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+        .filter-field { display: flex; flex-direction: column; gap: 6px; }
+        .filter-field > label, .filter-label { color: var(--admin-muted); font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+        .filter-input, .filter-select {
+            min-height: 42px;
+            padding: 0 13px;
+            color: var(--admin-ink);
+            border: 1px solid var(--admin-line);
+            border-radius: 9px;
+            background: #fbfefd;
+            font-family: "DM Sans", Arial, sans-serif;
+            font-size: 13px;
+        }
+        .filter-input { min-width: 230px; }
+        .filter-select { min-width: 150px; }
+        .filter-input:focus, .filter-select:focus { outline: none; border-color: var(--admin-primary); box-shadow: 0 0 0 3px rgba(15, 138, 131, .14); }
+        .filter-button {
+            min-height: 42px;
+            padding: 0 18px;
+            color: #ffffff !important;
+            border: 1px solid rgba(15, 138, 131, .5) !important;
+            border-radius: 9px;
+            background: var(--admin-primary) !important;
+            font-family: "Space Grotesk", Arial, sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            cursor: pointer;
+        }
+        .filter-button:hover { background: var(--admin-primary-dark) !important; }
+        .filter-reset {
+            min-height: 42px;
+            padding: 0 15px;
+            color: var(--admin-primary) !important;
+            border: 1px solid rgba(15, 138, 131, .35) !important;
+            border-radius: 9px;
+            background: #ffffff !important;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        .table-scroll { overflow-x: auto; }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .data-table th {
+            padding: 12px 14px;
+            color: var(--admin-muted);
+            border-bottom: 1px solid var(--admin-line);
+            background: var(--admin-soft);
+            font-family: "Space Grotesk", Arial, sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            text-align: left;
+            white-space: nowrap;
+        }
+        .data-table td { padding: 14px; color: var(--admin-ink); border-bottom: 1px solid var(--admin-line); vertical-align: middle; }
+        .data-table tr:hover td { background: rgba(15, 138, 131, .04); }
+        .thumb {
+            width: 52px; height: 52px;
+            border: 1px solid var(--admin-line);
+            border-radius: 9px;
+            background: #f6fbfa;
+            object-fit: cover;
+        }
+        .status-pill {
+            display: inline-block;
+            padding: 5px 11px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+        }
+        .status-pill.is-active { color: #0f6f52; border: 1px solid rgba(16, 143, 106, .3); background: rgba(16, 143, 106, .12); }
+        .status-pill.is-inactive { color: #8a5a12; border: 1px solid rgba(184, 124, 26, .3); background: rgba(184, 124, 26, .12); }
+        .row-actions { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .row-action {
+            min-height: 34px;
+            padding: 0 12px;
+            display: inline-flex;
+            align-items: center;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none !important;
+            cursor: pointer;
+        }
+        .row-action.is-edit { color: var(--admin-primary-dark) !important; border: 1px solid rgba(15, 138, 131, .35); background: rgba(15, 138, 131, .07); }
+        .row-action.is-edit:hover { background: rgba(15, 138, 131, .14); }
+        .row-action.is-save { color: #ffffff !important; border: 1px solid rgba(15, 138, 131, .5); background: var(--admin-primary); }
+        .row-action.is-cancel { color: var(--admin-muted) !important; border: 1px solid var(--admin-line); background: #ffffff; }
+        .row-action.is-delete { color: var(--admin-danger) !important; border: 1px solid rgba(214, 69, 69, .3); background: rgba(214, 69, 69, .08); }
+        .row-action.is-delete:hover { background: rgba(214, 69, 69, .16); }
+        .empty-state { padding: 34px 14px; color: var(--admin-muted); text-align: center; font-size: 13px; }
         @media (max-width: 1023px) { .form-layout { grid-template-columns: minmax(0, 1fr); } }
-        @media (max-width: 640px) { .form-card { padding: 20px 16px 22px; } }
+        @media (max-width: 640px) {
+            .form-card { padding: 20px 16px 22px; }
+            .list-card { padding: 18px 14px 6px; }
+            .filter-input, .filter-select { min-width: 0; width: 100%; }
+            .filter-field { width: 100%; }
+        }
 
     </style>
 </head>
@@ -643,6 +759,10 @@
                             <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.5 7.8 7.5 4.3 7.5-4.3M12 12v9"/></svg></span>
                             Add product
                         </asp:HyperLink>
+                        <a href="Feedback.aspx" class="sidebar-link">
+                            <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z"/></svg></span>
+                            Feedback
+                        </a>
                     </nav>
                     <div class="sidebar-logout">
                         <asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="~/Login.aspx" CssClass="sidebar-link">
@@ -715,6 +835,84 @@
                                 <li>New categories appear on the product form right away.</li>
                             </ul>
                         </aside>
+                    </div>
+
+                    <!-- Category list with search + status filter -->
+                    <div class="list-card">
+                        <div class="list-head">
+                            <div>
+                                <h2 class="section-heading">
+                                    <span class="heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
+                                    All categories
+                                </h2>
+                                <p class="field-hint" style="margin-top:6px;">Review category photos, update names, or remove a category.</p>
+                            </div>
+                            <div class="filter-bar">
+                                <div class="filter-field">
+                                    <asp:Label ID="lblSearch" runat="server" AssociatedControlID="txtSearch" CssClass="filter-label" Text="Search"></asp:Label>
+                                    <asp:TextBox ID="txtSearch" runat="server" CssClass="filter-input" placeholder="Search by category name"></asp:TextBox>
+                                </div>
+                                <asp:Button ID="btnSearch" runat="server" Text="APPLY" CssClass="filter-button" OnClick="btnSearch_Click" />
+                                <asp:Button ID="btnClearFilters" runat="server" Text="Clear" CssClass="filter-reset" OnClick="btnClearFilters_Click" />
+                            </div>
+                        </div>
+
+                        <div class="table-scroll">
+                            <asp:GridView ID="gvCategories" runat="server" AutoGenerateColumns="false" DataKeyNames="category id"
+                                CssClass="data-table" GridLines="None" CellPadding="-1" BorderWidth="0"
+                                OnRowEditing="gvCategories_RowEditing"
+                                OnRowCancelingEdit="gvCategories_RowCancelingEdit"
+                                OnRowUpdating="gvCategories_RowUpdating"
+                                OnRowDeleting="gvCategories_RowDeleting">
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Photo">
+                                        <ItemTemplate>
+                                            <asp:Image ID="imgCategory" runat="server" CssClass="thumb" AlternateText="Category photo"
+                                                ImageUrl='<%# CategoryPhotoUrl(Eval("image")) %>' />
+                                        </ItemTemplate>
+                                        <EditItemTemplate>
+                                            <asp:Image ID="imgCategoryEdit" runat="server" CssClass="thumb" AlternateText="Category photo"
+                                                ImageUrl='<%# CategoryPhotoUrl(Eval("image")) %>' />
+                                            <div style="margin-top:8px;">
+                                                <asp:FileUpload ID="fuEditPhoto" runat="server" />
+                                            </div>
+                                        </EditItemTemplate>
+                                    </asp:TemplateField>
+
+                                    <asp:TemplateField HeaderText="Category name">
+                                        <ItemTemplate>
+                                            <span style="font-weight:600;"><%# Eval("categoryname") %></span>
+                                        </ItemTemplate>
+                                        <EditItemTemplate>
+                                            <asp:TextBox ID="txtEditName" runat="server" CssClass="filter-input" Text='<%# Bind("categoryname") %>'></asp:TextBox>
+                                        </EditItemTemplate>
+                                    </asp:TemplateField>
+
+                                    <asp:TemplateField HeaderText="Actions">
+                                        <ItemTemplate>
+                                            <span class="row-actions">
+                                                <asp:LinkButton ID="lnkEdit" runat="server" CommandName="Edit" CssClass="row-action is-edit" Text="Edit" />
+                                                <asp:LinkButton ID="lnkDelete" runat="server" CommandName="Delete" CssClass="row-action is-delete" Text="Delete"
+                                                    OnClientClick="return confirm('Delete this category? This cannot be undone.');" />
+                                            </span>
+                                        </ItemTemplate>
+                                        <EditItemTemplate>
+                                            <span class="row-actions">
+                                                <asp:LinkButton ID="lnkUpdate" runat="server" CommandName="Update" CssClass="row-action is-save" Text="Save" />
+                                                <asp:LinkButton ID="lnkCancel" runat="server" CommandName="Cancel" CssClass="row-action is-cancel" Text="Cancel" CausesValidation="false" />
+                                            </span>
+                                        </EditItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <EmptyDataTemplate>
+                                    <div class="empty-state">No categories match your search yet.</div>
+                                </EmptyDataTemplate>
+                            </asp:GridView>
+                        </div>
+
+                        <div style="padding: 4px 0 16px;">
+                            <asp:Label ID="lblListMessage" runat="server" Visible="False" CssClass="status-note"></asp:Label>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -827,6 +1025,7 @@
 
             document.addEventListener('DOMContentLoaded', setupAdminSidebar);
         }());
-</body >
-</html >
+    </script>
+</body>
+</html>
 

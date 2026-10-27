@@ -1,606 +1,380 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Checkout.aspx.cs" Inherits="ECommerceproject.Checkout" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Checkout.aspx.cs" Inherits="ECommerceproject.Checkout" ResponseEncoding="utf-8" %>
 <!doctype html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="assets/css/output.css" rel="stylesheet">
-  <link href="assets/css/custom.css" rel="stylesheet" />
-  <link href="assets/css/owl.carousel.min.css" rel="stylesheet">
-  <link href="assets/css/owl.theme.default.min.css" rel="stylesheet">
-  <title>Checkout Page</title>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Review your FlipShop delivery details, cart, payment option, and order total." />
+    <title>Checkout | FlipShop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&amp;family=Outfit:wght@600;700&amp;display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #008ecc;
+            --primary-hover: #007eb5;
+            --nav: #0c5273;
+            --action: #f97316;
+            --action-hover: #ea580c;
+            --success: #2f9e44;
+            --success-soft: #eaf9ed;
+            --page: #f8fafc;
+            --surface: #ffffff;
+            --subtle: #f8fafc;
+            --border: #e5e7eb;
+            --text: #1f2937;
+            --muted: #64748b;
+            --shadow-sm: 0 1px 2px rgba(15, 23, 42, .06), 0 1px 3px rgba(15, 23, 42, .08);
+            --shadow-md: 0 8px 22px rgba(15, 23, 42, .08);
+        }
+        * { box-sizing: border-box; }
+        html { color-scheme: light; }
+        body { margin: 0; min-width: 320px; overflow-x: hidden; background: var(--page); color: var(--text); font-family: "Figtree", Arial, sans-serif; }
+        button, input, textarea { font: inherit; }
+        a { color: inherit; text-decoration: none; }
+        .icon { width: 22px; height: 22px; display: block; }
+        .site-header { background: var(--primary); color: #fff; box-shadow: var(--shadow-sm); }
+        .header-inner { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 20px; padding: 12px 24px; }
+        .brand-wrap, .header-actions, .brand-link, .icon-button { display: flex; align-items: center; }
+        .brand-wrap { gap: 10px; }
+        .brand-link { font: 700 24px/1 "Outfit", sans-serif; }
+        .icon-button { position: relative; justify-content: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 9px; background: transparent; color: inherit; cursor: pointer; transition: background-color .18s ease; }
+        .icon-button:hover { background: rgba(255,255,255,.14); }
+        .search-box { height: 42px; display: flex; align-items: center; gap: 10px; padding: 0 14px; border-radius: 9px; background: #fff; box-shadow: 0 0 0 1px rgba(255,255,255,.24); }
+        .search-box svg { color: var(--primary); flex: 0 0 auto; }
+        .search-box input { min-width: 0; width: 100%; border: 0; outline: 0; background: transparent; color: var(--text); font-size: 14px; }
+        .search-box input::placeholder { color: #94a3b8; }
+        .header-actions { gap: 4px; }
+        .cart-count { position: absolute; top: 1px; right: 0; display: grid; place-items: center; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 999px; background: var(--action); color: #fff; font-size: 10px; font-weight: 700; }
+        .mobile-search { display: none; }
+        .category-nav { background: var(--nav); color: #fff; }
+        .category-inner { max-width: 1180px; margin: 0 auto; display: flex; padding: 0 24px; }
+        .category-link { padding: 11px 22px; font-size: 13px; font-weight: 600; transition: background-color .18s ease; }
+        .category-link:first-child { padding-left: 0; }
+        .category-link:hover { background: rgba(255,255,255,.08); }
+        .drawer-backdrop { position: fixed; inset: 0; z-index: 100; visibility: hidden; opacity: 0; background: rgba(15,23,42,.42); transition: opacity .18s ease, visibility .18s ease; }
+        .drawer-backdrop.open { visibility: visible; opacity: 1; }
+        .drawer { width: min(84vw, 320px); height: 100%; transform: translateX(-100%); background: #fff; box-shadow: var(--shadow-md); transition: transform .2s ease; }
+        .drawer-backdrop.open .drawer { transform: translateX(0); }
+        .drawer-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: var(--primary); color: #fff; }
+        .drawer-title { font: 700 20px/1 "Outfit", sans-serif; }
+        .drawer-body { padding: 18px 16px; }
+        .drawer-label { margin: 0 0 8px; color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .drawer-link { display: block; padding: 13px 2px; border-bottom: 1px solid var(--border); color: var(--text); font-size: 14px; font-weight: 600; }
+        .page-shell { max-width: 1200px; margin: 0 auto; padding: 30px 24px 64px; }
+        .page-intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+        .eyebrow { margin: 0 0 5px; color: var(--primary); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        h1 { margin: 0; color: var(--nav); font: 700 30px/1.15 "Outfit", sans-serif; }
+        .intro-copy { margin: 7px 0 0; color: var(--muted); font-size: 14px; }
+        .item-pill { flex: 0 0 auto; margin-bottom: 2px; padding: 7px 12px; border: 1px solid var(--border); border-radius: 999px; background: #fff; color: var(--muted); font-size: 12px; font-weight: 600; }
+        .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; padding: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 12px; background: #fff; box-shadow: var(--shadow-sm); list-style: none; }
+        .step { display: flex; min-width: 0; align-items: center; justify-content: center; gap: 8px; padding: 14px 8px; border-right: 1px solid var(--border); }
+        .step:last-child { border-right: 0; }
+        .step.complete { background: var(--success-soft); }
+        .step-number { display: grid; flex: 0 0 auto; width: 25px; height: 25px; place-items: center; border-radius: 50%; background: var(--nav); color: #fff; font-size: 11px; font-weight: 700; }
+        .step.complete .step-number { background: var(--success); }
+        .step-label { overflow: hidden; color: var(--nav); font-size: 11px; font-weight: 700; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+        .checkout-grid { display: grid; grid-template-columns: minmax(0, 1fr) 350px; align-items: start; gap: 24px; margin-top: 24px; }
+        .checkout-main { min-width: 0; display: grid; gap: 20px; }
+        .checkout-card, .summary-card { overflow: hidden; border: 1px solid var(--border); border-radius: 12px; background: #fff; box-shadow: var(--shadow-sm); transition: box-shadow .18s ease; }
+        .checkout-card:hover { box-shadow: var(--shadow-md); }
+        .section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--subtle); }
+        .section-title-wrap { display: flex; min-width: 0; align-items: center; gap: 12px; }
+        .section-number { display: grid; flex: 0 0 auto; width: 28px; height: 28px; place-items: center; border-radius: 50%; background: var(--nav); color: #fff; font-size: 12px; font-weight: 700; }
+        .section-number.complete { background: var(--success-soft); color: var(--success); }
+        .section-title { margin: 0; overflow: hidden; color: var(--nav); font: 600 16px/1.2 "Outfit", sans-serif; text-overflow: ellipsis; white-space: nowrap; }
+        .complete-pill { padding: 5px 10px; border-radius: 999px; background: var(--success-soft); color: var(--success); font-size: 11px; font-weight: 700; }
+        .section-body { padding: 24px; }
+        .info-row { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 12px; margin-bottom: 12px; font-size: 14px; }
+        .info-label { color: var(--muted); }
+        .info-value { min-width: 0; font-weight: 600; }
+        .account-link { display: inline-block; margin-top: 2px; color: var(--primary); font-size: 14px; font-weight: 600; }
+        .account-link:hover { color: var(--primary-hover); }
+        .button-row { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+        .button-row.start { justify-content: flex-start; padding-top: 0; border-top: 0; }
+        .btn { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 8px; padding: 0 20px; cursor: pointer; font-size: 12px; font-weight: 700; text-transform: uppercase; transition: transform .16s ease, background-color .16s ease, border-color .16s ease, box-shadow .16s ease; }
+        .btn:hover { transform: translateY(-1px); }
+        .btn:focus-visible, .icon-button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid rgba(0,142,204,.22); outline-offset: 2px; }
+        .btn-action { background: var(--action); color: #fff; box-shadow: 0 5px 12px rgba(249,115,22,.16); }
+        .btn-action:hover { background: var(--action-hover); }
+        .btn-outline { border-color: #9bd8ef; background: #fff; color: var(--primary); }
+        .btn-outline:hover { border-color: var(--primary); background: #f4fbfe; }
+        .login-layout { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 20px; }
+        .verified { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; background: var(--success-soft); color: var(--success); font-size: 11px; font-weight: 700; }
+        .address-summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 16px; }
+        .address-content { display: flex; min-width: 0; gap: 12px; }
+        .address-icon, .choice-icon, .pay-icon { display: grid; flex: 0 0 auto; place-items: center; border-radius: 9px; background: var(--success-soft); color: var(--success); }
+        .address-icon { width: 38px; height: 38px; }
+        .address-name { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin: 0; font-weight: 700; }
+        .check { display: inline-grid; width: 18px; height: 18px; place-items: center; color: var(--success); }
+        .check-icon { width: 15px; height: 15px; display: block; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+        .step-number .check-icon, .section-number .check-icon { width: 14px; height: 14px; }
+        .btn-confirmed, .btn-confirmed:hover { background: var(--success); color: #fff; box-shadow: none; transform: none; cursor: default; }
+        .btn-confirmed::before { content: "\2713"; margin-right: 7px; font-size: 15px; line-height: 1; }
+        .checkout-card.is-complete .section-head { background: var(--success-soft); }
+        .checkout-card.is-complete .section-number { background: var(--success); color: #fff; }
+        .checkout-card.is-complete .complete-pill { display: inline-block; }
+        .address-line { margin: 6px 0 0; color: #475569; font-size: 14px; line-height: 1.65; }
+        .address-contact { margin: 7px 0 0; overflow-wrap: anywhere; color: var(--muted); font-size: 13px; }
+        .option-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        .option-button { width: 100%; min-height: 74px; display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--border); border-radius: 9px; background: #fff; color: var(--text); cursor: pointer; text-align: left; transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease; }
+        .option-button:hover { transform: translateY(-1px); border-color: #9bd8ef; box-shadow: var(--shadow-sm); }
+        .choice-icon { width: 38px; height: 38px; background: #eaf7fc; color: var(--primary); }
+        .option-title { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+        .option-copy { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+        .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+        .field.full { grid-column: 1 / -1; }
+        .field label { display: block; margin-bottom: 7px; color: var(--text); font-size: 13px; font-weight: 700; }
+        .field input, .field textarea { width: 100%; border: 1px solid #cbd5e1; border-radius: 9px; padding: 11px 13px; background: var(--subtle); color: var(--text); outline: 0; transition: border-color .16s ease, background-color .16s ease, box-shadow .16s ease; }
+        .field input:focus, .field textarea:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(0,142,204,.12); }
+        .field textarea { min-height: 94px; resize: vertical; }
+        .product-list { display: grid; }
+        .cart-item { display: grid; grid-template-columns: 92px minmax(0, 1fr) auto; align-items: center; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--border); }
+        .cart-item:first-child { padding-top: 0; }
+        .cart-item:last-child { padding-bottom: 0; border-bottom: 0; }
+        .product-image { width: 92px; height: 92px; display: grid; place-items: center; overflow: hidden; border: 1px solid var(--border); border-radius: 9px; background: var(--subtle); }
+        .product-image img { width: 100%; height: 100%; object-fit: contain; }
+        .product-name { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.4; }
+        .product-price { margin: 8px 0 0; color: var(--nav); font: 700 16px/1 "Outfit", sans-serif; }
+        .quantity { padding: 6px 11px; border: 1px solid var(--border); border-radius: 999px; background: var(--subtle); color: var(--muted); font-size: 11px; font-weight: 700; }
+        .empty-cart { margin: 0; color: var(--muted); font-size: 14px; }
+        .payment-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        .payment-choice { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 68px; padding: 14px; border: 1px solid var(--border); border-radius: 9px; background: #fff; cursor: pointer; transition: border-color .16s ease, background-color .16s ease, box-shadow .16s ease; }
+        .payment-choice:has(input:checked) { border-color: var(--primary); background: #eaf7fc; box-shadow: var(--shadow-sm); }
+        .payment-choice input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; opacity: 0; }
+        .pay-icon { width: 38px; height: 38px; background: #fff; color: var(--primary); box-shadow: var(--shadow-sm); }
+        .payment-label { min-width: 0; font-size: 13px; font-weight: 700; }
+        .radio-mark { width: 20px; height: 20px; display: grid; place-items: center; border: 2px solid #cbd5e1; border-radius: 50%; }
+        .payment-choice:has(input:checked) .radio-mark { border-color: var(--primary); background: var(--primary); }
+        .payment-choice:has(input:checked) .radio-mark::after { width: 6px; height: 6px; border-radius: 50%; background: #fff; content: ""; }
+        .summary-card { position: sticky; top: 20px; }
+        .summary-head { padding: 17px 20px; background: var(--nav); color: #fff; }
+        .summary-head h2 { margin: 0; font: 600 18px/1.2 "Outfit", sans-serif; }
+        .summary-head p { margin: 5px 0 0; color: rgba(255,255,255,.72); font-size: 11px; }
+        .summary-lines { margin: 0; padding: 20px; }
+        .summary-row { display: flex; justify-content: space-between; gap: 18px; margin-bottom: 16px; font-size: 14px; }
+        .summary-row:last-child { margin-bottom: 0; }
+        .summary-row dt { color: #475569; }
+        .summary-row dd { margin: 0; font-weight: 600; }
+        .discount { color: var(--success); }
+        .summary-total { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 20px; border-top: 1px dashed var(--border); background: var(--subtle); color: var(--nav); font: 700 16px/1.2 "Outfit", sans-serif; }
+        .summary-total strong { font-size: 24px; }
+        .saving { padding: 13px 20px; border-top: 1px solid var(--border); color: var(--success); font-size: 11px; font-weight: 700; }
+        @media (max-width: 900px) {
+            .category-nav { display: none; }
+            .checkout-grid { grid-template-columns: 1fr; }
+            .summary-card { position: static; }
+        }
+        @media (max-width: 700px) {
+            .header-inner { grid-template-columns: auto 1fr auto; gap: 7px; padding: 10px 12px; }
+            .desktop-search { display: none; }
+            .mobile-search { display: flex; grid-column: 1 / -1; }
+            .brand-link { font-size: 21px; }
+            .page-shell { padding: 22px 12px 46px; }
+            h1 { font-size: 24px; }
+            .intro-copy { line-height: 1.5; }
+            .step-label { display: none; }
+            .checkout-grid { gap: 20px; }
+            .section-head { padding: 14px 16px; }
+            .section-body { padding: 18px 16px; }
+            .complete-pill { display: none; }
+            .option-grid, .form-grid, .payment-options { grid-template-columns: 1fr; }
+            .login-layout { grid-template-columns: 1fr; }
+            .verified { justify-self: start; }
+            .cart-item { grid-template-columns: 76px minmax(0, 1fr); gap: 14px; padding: 16px 0; }
+            .product-image { width: 76px; height: 76px; }
+            .quantity { grid-column: 2; justify-self: start; margin-top: -8px; }
+            .button-row .btn { width: 100%; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+        }
+    </style>
 </head>
-<body class="bg-[#F3F3F3]">
-    <form id="form1" runat="server">
-     <!-- Hearder Section -->
-     <header class="w-full bg-[#008ECC] flex justify-center h-23 sm:h-23 md:h-23 lg:h-16 fixed top-0 z-50">
-          <div class="w-screen  max-w-[1120px]">
-               <div class="flex mt-2 sm:mt-2 md:mt-2 lg:mt-4">
-                    <div class="menu-bar float-left cursor-pointer text-white ml-3 m-0 mr-4 h-8 w-8 openNav">
-                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                              stroke="currentColor" class="h-8 w-8">
-                              <path stroke-linecap="round" stroke-linejoin="round"
-                                   d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                         </svg>
-                    </div>
-                    <!-- Side Menu Section -->
-                    <div class="menu-section bg-[rgba(0,0,0,.2)] z-[99] w-full h-full fixed left-0 top-0 duration-75 hidden">
-                         <div class="menu-sidebar bg-[#ececed] float-left w-[80%] sm:w-[80%] md:w-[80%] lg:w-[320px]  h-full  overflow-y-auto relative z-50">
-                                   <div class="menu-header bg-[#008ECC] h-16 sm:h-16 md:h-16 lg:h-16">
-                                        <div class="flex justify-between px-3">
-                                             <div class="flex justify-center items-center mt-4">
-                                                  <div class="close text-white text-2xl cursor-pointer closeNav">
-                                                       <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                            class="w-6 h-6">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"  d="M15.75 19.5L8.25 12l7.5-7.5" />
-                                                       </svg>
-                                                  </div>
-                                                  <div class="ml-1 text-white font-semibold">Hello</div>
-                                             </div>
-                                             <div class="profile text-[14px] flex justify-center items-center mt-4">
-                                                  <a href="login.html"
-                                                       class="text-white font-bold flex  border px-4 py-1 rounded-[40px] hover:border-[#000]">
-                                                       Sign In
-                                                  </a>
-                                             </div>
-                                        </div>
-                                   </div>
-                                   <div class="menu-body">
-                                        <div class="menu-category bg-white pt-6 pb-8 px-4 mb-1">
-                                             <ul>
-                                                  <li>
-                                                       <a href="#" class="text-gray-500 block border-b py-2 flex">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                                 class="w-6 h-6 text-[#008ECC]">
-                                                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                                                      d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                                                            </svg>
-                                                            <span class="ml-2">Home</span>
-                                                       </a>
-                                                  </li>
-                                                  <li>
-                                                       <a href="#" class="text-gray-500 block border-b py-3 flex">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                                 class="w-6 h-6 text-[#008ECC]">
-                                                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                                                      d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
-                                                            </svg>
-                                                            <span class="ml-2">Category</span>
-                                                       </a>
-                                                  </li>
-                                             </ul>
-                                             <div class=" font-semibold text-black text-sm mt-4 mb-3">My Account</div>
-                                             <ul>
-                                                  <li>
-                                                       <a href="#" class="text-gray-500 block border-b py-2 flex">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                                 class="w-6 h-6 text-[#008ECC]">
-                                                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                                                      d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                                                            </svg>
-                                                            <span class="ml-2">My Orders</span>
-                                                       </a>
-                                                  </li>
-                                                  <li>
-                                                       <a href="#" class="text-gray-500 block border-b py-3 flex">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-[#008ECC]">
-                                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                                                            </svg>
-                                                            <span class="ml-2">My List</span>
-                                                       </a>
-                                                  </li>
-                                                  <li>
-                                                       <a href="#" class="text-gray-500 block border-b py-3 flex">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-[#008ECC]">
-                                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                                                               </svg>
-                                                            <span class="ml-2">My Wishlist</span>
-                                                       </a>
-                                                  </li>
-                                                  <li>
-                                                       <a href="#" class="text-gray-500 block border-b py-3 flex">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-[#008ECC]">
-                                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
-                                                               </svg>
-                                                            <span class="ml-2">Wallet</span>
-                                                       </a>
-                                                  </li>
-                                             </ul>
-                                             <div class=" font-semibold text-black text-sm mt-4 mb-3">Help & Support</div>
-                                             <ul>
-                                                  <li>
-                                                       <a href="#" class="text-gray-500 block border-b py-2 flex">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-[#008ECC]">
-                                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                                                               </svg>
-                                                            <span class="ml-2">FAQs/Need Help</span>
-                                                       </a>
-                                                  </li>
-                                                  <li>
-                                                       <a href="#" class="text-gray-500 block border-b py-3 flex">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-[#008ECC]">
-                                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-                                                               </svg>
-                                                            <span class="ml-2">About Us</span>
-                                                       </a>
-                                                  </li>
-                                                  <li>
-                                                       <a href="#" class="text-gray-500 block border-b py-3 flex">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-[#008ECC]">
-                                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9.75v-4.5m0 4.5h4.5m-4.5 0l6-6m-3 18c-8.284 0-15-6.716-15-15V4.5A2.25 2.25 0 014.5 2.25h1.372c.516 0 .966.351 1.091.852l1.106 4.423c.11.44-.054.902-.417 1.173l-1.293.97a1.062 1.062 0 00-.38 1.21 12.035 12.035 0 007.143 7.143c.441.162.928-.004 1.21-.38l.97-1.293a1.125 1.125 0 011.173-.417l4.423 1.106c.5.125.852.575.852 1.091V19.5a2.25 2.25 0 01-2.25 2.25h-2.25z" />
-                                                               </svg>
-                                                            <span class="ml-2">Contact Us</span>
-                                                       </a>
-                                                  </li>
-                                                  <li>
-                                                       <a href="#" class="text-gray-500 block border-b py-3 flex">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-[#008ECC]">
-                                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                                                               </svg>
-                                                            <span class="ml-2">Guide</span>
-                                                       </a>
-                                                  </li>
-                                                  <li>
-                                                       <a href="#" class="text-gray-500 block border-b py-3 flex">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-[#008ECC]">
-                                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                                                               </svg>
-                                                            <span class="ml-2">Caution Notice</span>
-                                                       </a>
-                                                  </li>
-                                             </ul>
-                                        </div>
-     
-                                       
-                                   </div>
-                         </div>
-                    </div>
-                    <!-- Logo  -->
-                    <div class="logo flex justify-center mr-10">
-                         <a href="index.html" class="max-w-full text-white font-bold text-[22px]">
-                               FlipShop
-                         </a>
-                    </div>
-                    <!-- Search -->
-                    <div
-                         class="search-container w-[55%] h-9 mr-10 rounded bg-white hidden md:hidden sm:hidden lg:block">
-                         <div class="search-box h-10 flex">
-                              <div class="p-1 pl-5 w-[95%]">
-                                   <input type="text"
-                                        class="w-full p-0 border-none border-transparent focus:border-transparent focus:ring-0"
-                                        placeholder="Search essentials, groceries, and more …">
-                              </div>
-                              <div class="search-list w-6 h-6 mt-1.5"></div>
-                         </div>
-                    </div>
-                    <!-- Login -->
-                    <div class="login mt-1 mr-2 sm:mr-3 md:mr-3 lg:mr-8">
-                         <a href="login.html" class="text-sm text-white flex">
-                              <span><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                             d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                             clip-rule="evenodd" />
-                                   </svg></span>
-                              <span class="hidden md:hidden sm:hidden lg:block  ml-2 mt-[2px]">Sign in / Sign up</span>
-                         </a>
-                    </div>
-                    <!-- Cart -->
-                    <div class="cart mt-[5px]">
-                         <a href="cart.html" class="text-sm pl-2 text-white flex">
-                              <span class="mr-3 sm:mr-3 md:mr-5 lg:mr-3">
-                                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path
-                                             d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-                                   </svg>
-                              </span>
-                              <span class="hidden md:hidden sm:hidden lg:block  mt-[1px]">Cart</span>
-                         </a>
-                    </div>
-               </div>
-               <!-- Mobile Search Section -->
-               <div
-                    class="mobile-search-container w-[95%] m-auto h-8 mt-1 rounded bg-white block md:block sm:block lg:hidden">
-                    <div class="search-box h-10 flex">
-                         <div class="p-1 pl-5 w-full">
-                              <input type="text"
-                                   class="w-full border-transparent focus:border-transparent focus:ring-0 border-none p-0"
-                                   placeholder="Search essentials, groceries, and more …">
-                         </div>
-                         <div class="search-list mr-2 w-6 h-6 mt-1.5"></div>
-                    </div>
-               </div>
-          </div>
-     </header>
-     <!-- Menu Section -->
-     <div class="w-full bg-[#0c5273ef] fixed top-[64px] z-10 hidden sm:hidden md:hidden lg:block">
-          <nav class="max-w-[1100px] m-auto">
-               <ul class="flex">
-                   <li class="relative parent-menu">
-                    <a href="fliter.html" class="text-white font-semibold text-[14px] pr-4 py-2 block">Groceries</a>
-                    <div class="child-menu">
-                         <div class="absolute top-[37px]">
-                              <ul class="max-w-[250px] min-w-[250px] bg-[#fff] p-[8px] shadow rounded-b-[6px]">
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Fruits</a></li>
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Dairy</a></li>
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Bakery</a></li>
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Personal Care</a></li>
-                              </ul>
-                         </div>
-                    </div>
-                  </li>
-                  <li class="relative parent-menu">
-                    <a href="fliter.html" class="text-white font-semibold text-[14px] px-4 py-2 block">Home & Kitchen</a>
-                    <div class="child-menu">
-                         <div class="absolute top-[37px]">
-                              <ul class="max-w-[250px] min-w-[250px] bg-[#fff] p-[8px] shadow rounded-b-[6px]">
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Kitchenware</a></li>
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Furniture</a></li>
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Tableware</a></li>
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Home Decor</a></li>
-                              </ul>
-                         </div>
-                    </div>
-                   </li>
-                   <li class="relative parent-menu">
-                    <a href="fliter.html" class="text-white font-semibold text-[14px] px-4 py-2 block">Fashion</a>
-                    <div class="child-menu">
-                         <div class="absolute top-[37px]">
-                              <ul class="max-w-[250px] min-w-[250px] bg-[#fff] p-[8px] shadow rounded-b-[6px]">
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Men</a></li>
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Women</a></li>
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Boy</a></li>
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Girl</a></li>
-                              </ul>
-                         </div>
-                    </div>
-                    </li>
-                    <li class="relative parent-menu">
-                    <a href="fliter.html" class="text-white font-semibold text-[14px] px-4 py-2 block">Electronics</a>
-                    <div class="child-menu">
-                         <div class="absolute top-[37px]">
-                              <ul class="max-w-[250px] min-w-[250px] bg-[#fff] p-[8px] shadow rounded-b-[6px]">
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Mobiles</a></li>
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Tablets</a></li>
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Laptop</a></li>
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Desktop</a></li>
-                              </ul>
-                         </div>
-                    </div>
-                    </li>
-                    <li class="relative parent-menu">
-                    <a href="fliter.html" class="text-white font-semibold text-[14px] px-4 py-2 block">Beauty</a>
-                    <div class="child-menu">
-                         <div class="absolute top-[37px]">
-                              <ul class="max-w-[250px] min-w-[250px] bg-[#fff] p-[8px] shadow rounded-b-[6px]">
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Make-Up</a></li>
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Hair</a></li>
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Skin Care</a></li>
-                                   <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Fragrances</a></li>
-                              </ul>
-                         </div>
-                    </div>
-                    </li>
-                    <li class="relative parent-menu">
-                         <a href="#" class="text-white font-semibold text-[14px] px-4 py-2 block">Pages</a>
-                         <div class="child-menu">
-                              <div class="absolute top-[37px]">
-                                   <ul class="max-w-[250px] min-w-[250px] bg-[#fff] p-[8px] shadow rounded-b-[6px]">
-                                        <li><a href="login.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Login/Signup Page</a></li>
-                                        <li><a href="verify.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">OTP Verify Page</a></li>
-                                        <li><a href="fliter.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Shop Page</a></li>
-                                        <li><a href="product.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Shop Single Page</a></li>
-                                        <li><a href="cart.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Cart Page</a></li>
-                                        <li><a href="checkout.html" class="py-2 px-1 block rounded hover:bg-gray-100 hover:text-black">Checkout Page</a></li>
-                                   </ul>
-                              </div>
-                         </div>
-                    </li>
-               </ul>
-         </nav> 
-     </div>
-
-            <!-- Cart Section -->
-            <div class="cart-section max-w-[1128px] m-auto  mt-[95px] sm:mt-[95px] md:mt-[85px] lg:mt-[110px]">
-                     <div class="flex flex-col-reverse sm:flex-col-reverse md:flex-row lg:flex-row px-2">
-                        <div class="w-[100%]  sm:w-[100%] md:w-[65%] lg:w-[70%] mb-4">
-                                <div class="bg-white shadow rounded mb-3">
-                                   <div class="login-check-section">
-                                        <div class="px-5 py-3 bg-blue-600 text-white uppercase rounded-t-sm">
-                                             <p><span class="bg-white text-blue-500 py-1 px-2 font-medium rounded-[2px] text-[10px] mr-3">1</span><span class="inline-block text-[14px]">Login</span></p>
-                                        </div>
-                                        <div class="p-5 login-check">
-                                             <div>
-                                                  <span class="text-[#878787] mr-3 text-[14px]">Name</span>
-                                                  <asp:Label ID="lblLoginName" runat="server" CssClass="text-[#212121] text-[14px]" Text="Not signed in"></asp:Label>
-                                             </div>
-                                             <div class="mt-1">
-                                                <span class="text-[#878787] mr-3 text-[14px]">Phone</span>
-                                                <asp:Label ID="lblLoginPhone" runat="server" CssClass="text-[#212121] text-[14px]"></asp:Label>
-                                           </div>
-                                           <div class="my-2">
-                                              <a href="#"><span class="text-blue-500 text-[14px] font-medium">Logout & Sign in to another account</span></a>
-                                           </div>
-                                           <div class="flex space-x-2 mt-3">
-                                             <asp:Button ID="btnContinueCheckout" runat="server" Text="Continue Checkout" CssClass="checkout-btn inline-block px-8 py-3 bg-orange-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md  hover:shadow-lg  focus:shadow-lg focus:outline-none focus:ring-0  active:shadow-lg transition duration-150 ease-in-out" />
-                                           </div>
-                                        </div>
-                                        <div class="logined flex justify-between px-5 py-3 hidden">
-                                             <div class="flex">
-                                                  <asp:Label ID="lblLoginNameSaved" runat="server" CssClass="text-[#212121] font-medium text-[14px] mt-2"></asp:Label>
-                                                  <asp:Label ID="lblLoginPhoneSaved" runat="server" CssClass="text-[#212121] text-[14px] ml-2 mt-2"></asp:Label>
-                                                  <span class=" text-green-700 ml-2 mt-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                                     </svg></span>
-                                             </div>
-                                             <div>
-                                                  <div class="flex space-x-2 justify-center">
-                                                       <asp:Button ID="btnChangeLogin" runat="server" Text="Change" CssClass="login-change-btn inline-block px-6 py-2.5 border  text-red-700 font-medium text-xs leading-tight uppercase  focus:outline-none focus:ring-0  active:shadow-lg transition duration-150 ease-in-out" />
-                                                     </div>
-                                             </div>
-                                        </div>
-                                      </div> 
-                                </div>
-                                <div class="bg-white shadow rounded">
-                                                                                                         <div class="address-section">
-                                        <div class="px-5 py-3 bg-blue-600 text-white uppercase rounded-t-sm">
-                                             <p><span class="bg-white text-blue-500 py-1 px-2 font-medium rounded-[2px] text-[10px] mr-3">2</span><span class="inline-block text-[14px]">Delivery Address</span></p>
-                                        </div>
-                                        
-                                        <asp:Panel ID="pnlDeliverySaved" runat="server" CssClass="flex justify-between px-5 py-3">
-                                             <div class="flex flex-col">
-                                                  <div class="flex">
-                                                       <asp:Label ID="lblAddressNameSaved" runat="server" CssClass="text-[#212121] font-medium text-[14px] mt-2"></asp:Label>
-                                                       <span class="text-[#212121] text-[14px] ml-4 mt-2"><asp:Label ID="lblAddressPhoneSaved" runat="server"></asp:Label></span>
-                                                       <span class=" text-green-700 ml-2 mt-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg></span>
-                                                  </div>
-                                                  <div class="mt-2">
-                                                       <asp:Label ID="lblAddressEmailSaved" runat="server" CssClass="text-gray-600 text-[14px] block"></asp:Label>
-                                                       <asp:Label ID="lblAddressFullSaved" runat="server" CssClass="text-[#212121] text-[14px] block mt-1"></asp:Label>
-                                                  </div>
-                                             </div>
-                                             <div>
-                                                  <div class="flex space-x-2 justify-center">
-                                                       <asp:Button ID="btnChangeAddress" runat="server" Text="Change" OnClick="btnChangeAddress_Click" CssClass="inline-block px-6 py-2.5 border text-red-700 font-medium text-xs leading-tight uppercase focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out" />
-                                                     </div>
-                                             </div>
-                                        </asp:Panel>
-
-                                        <asp:Panel ID="pnlDeliveryOptions" runat="server" Visible="false" CssClass="px-5 py-4 border-b border-gray-200">
-                                             <div class="flex space-x-4">
-                                                  <asp:Button ID="btnAddAddressOption" runat="server" Text="Add New Address" OnClick="btnAddAddressOption_Click" CssClass="inline-block px-6 py-2.5 bg-blue-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out" />
-                                                  <asp:Button ID="btnEditDetailsOption" runat="server" Text="Edit Details" OnClick="btnEditDetailsOption_Click" CssClass="inline-block px-6 py-2.5 bg-blue-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out" />
-                                             </div>
-                                        </asp:Panel>
-
-                                        <asp:Panel ID="pnlAddNewAddress" runat="server" Visible="false" CssClass="px-5 py-3">
-                                            <div class="flex justify-between w-[100%] sm:w-[100%] md:w-[100%] lg:w-[60%] mb-2">
-                                                 <label for="" class="pt-2 text-[#878787] w-[40%] text-[14px]">Address</label>
-                                                 <asp:TextBox ID="txtAddress" runat="server" TextMode="MultiLine" Rows="3" CssClass="placeholder:text-[14px] w-[60%] form-control block px-3 py-1.5 resize-none text-base rounded transition ease-in-out m-0 focus:border-[#878787] focus:ring-0 focus:outline-none" placeholder="Flat/House No. Colony/Street No."></asp:TextBox>
-                                            </div>
-                                            <div class="flex space-x-2 mt-3 justify-end w-[100%] sm:w-[100%] md:w-[100%] lg:w-[60%]">
-                                                 <asp:Button ID="btnSaveTempAddress" runat="server" Text="SAVE AND CONTINUE" OnClick="btnSaveTempAddress_Click" CssClass="w-[60%] inline-block px-8 py-3 bg-orange-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out" />
-                                            </div>
-                                        </asp:Panel>
-
-                                        <asp:Panel ID="pnlEditDetails" runat="server" Visible="false" CssClass="px-5 py-3">
-                                            <div class="flex justify-between w-[100%] sm:w-[100%] md:w-[100%] lg:w-[60%] mb-2">
-                                                 <label for="" class="pt-2 text-[#878787] w-[40%] text-[14px]">Name</label>
-                                                 <asp:TextBox ID="txtName" runat="server" CssClass="h-[35px] w-[60%] placeholder:text-[14px] focus:border-[#878787] focus:ring-0 border px-4 rounded" placeholder="Full Name"></asp:TextBox>
-                                            </div>
-                                            <div class="flex justify-between w-[100%] sm:w-[100%] md:w-[100%] lg:w-[60%] mb-2">
-                                                 <label for="" class="pt-2 text-[#878787] w-[40%] text-[14px]">Mobile Number</label>
-                                                 <asp:TextBox ID="txtMobile" runat="server" CssClass="h-[35px] w-[60%] placeholder:text-[14px] focus:border-[#878787] focus:ring-0 border px-4 rounded" placeholder="Mobile Number"></asp:TextBox>
-                                            </div>
-                                            <div class="flex justify-between w-[100%] sm:w-[100%] md:w-[100%] lg:w-[60%] mb-2">
-                                                 <label for="" class="pt-2 text-[#878787] w-[40%] text-[14px]">Email</label>
-                                                 <asp:TextBox ID="txtEmail" runat="server" CssClass="h-[35px] w-[60%] placeholder:text-[14px] focus:border-[#878787] focus:ring-0 border px-4 rounded" placeholder="Email"></asp:TextBox>
-                                            </div>
-                                            <div class="flex space-x-2 mt-3 justify-end w-[100%] sm:w-[100%] md:w-[100%] lg:w-[60%]">
-                                                 <asp:Button ID="btnSaveDetails" runat="server" Text="SAVE AND CONTINUE" OnClick="btnSaveDetails_Click" CssClass="w-[60%] inline-block px-8 py-3 bg-orange-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out" />
-                                            </div>
-                                        </asp:Panel>
-                                  </div>
-
-                                <div class="bg-white shadow rounded mb-3 mt-3">
-                                   <div class="review-cart-section">
-                                        <div class="px-5 py-3 bg-blue-600 text-white uppercase rounded-t-sm">
-                                             <p><span class="bg-white text-blue-500 py-1 px-2 font-medium rounded-[2px] text-[10px] mr-3">3</span><span class="inline-block text-[14px]">REVIEW ORDER</span></p>
-                                        </div>
-                                        <div class="cartSave flex justify-between px-5 py-3 hidden">
-                                             <div class="flex">
-                                                  <asp:Label ID="lblReviewItemCount" runat="server" CssClass="text-[#212121] font-medium text-[14px] mt-2"></asp:Label>
-                                                  
-                                                  <span class=" text-green-700 ml-2 mt-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                                     </svg></span>
-                                             </div>
-                                             <div>
-                                                  <div class="flex space-x-2 justify-center">
-                                                       <asp:Button ID="btnChangeCart" runat="server" Text="Change" CssClass="cart-change-btn inline-block px-6 py-2.5 border  text-red-700 font-medium text-xs leading-tight uppercase  focus:outline-none focus:ring-0  active:shadow-lg transition duration-150 ease-in-out" />
-                                                     </div>
-                                             </div>
-                                        </div>
-                                        <div class="review-cart">
-                                             <asp:Repeater ID="rptReviewCart" runat="server">
-    <ItemTemplate>
-        <div class="cart-item border-b p-5 flex">
-            <div>
-                 <img src='<%# ResolveUrl(string.IsNullOrEmpty(Convert.ToString(Eval("Image"))) ? "~/ProductPhotos/placeholder.jpg" : Convert.ToString(Eval("Image"))) %>' alt='<%# Eval("ProductName") %>' class="max-w-[104px] w-auto">
+<body>
+<form id="form1" runat="server">
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="brand-wrap">
+                <button type="button" class="icon-button openNav" aria-label="Open navigation menu" aria-controls="siteDrawer" aria-expanded="false">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+                <a class="brand-link" href="Home.aspx">FlipShop</a>
             </div>
-            <div class="pl-3">
-                   <div>
-                       <p class="font-medium text-black text-[16px]"><%# Eval("ProductName") %></p>
-                   </div>
-                 <div class="flex mt-3">
-                     <p class="text-black font-medium p-0 text[16px] pr-2">
-                          &#8377;<%# Eval("Price", "{0:0.00}") %>
-                     </p>
-                  </div>
-                  <div class="flex mt-4">
-                       <div class="text-[13px] font-medium mt-2 text-[#878787]">Qty: <%# Eval("Quantity") %></div>
-                   </div>
+            <label class="search-box desktop-search">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></svg>
+                <input type="search" aria-label="Search products" placeholder="Search essentials, groceries, and more..." />
+            </label>
+            <div class="header-actions">
+                <asp:LinkButton ID="lnkLoginProfile" runat="server" OnClick="lnkLoginProfile_Click" CssClass="icon-button" aria-label="Your profile" UseSubmitBehavior="false"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M5 21a7 7 0 0 1 14 0" /></svg><asp:Literal ID="litProfileName" runat="server"></asp:Literal></asp:LinkButton>
+                <a class="icon-button" href="cart.aspx" aria-label="Your cart"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="20" r="1" /><circle cx="18" cy="20" r="1" /><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.5h7.9a2 2 0 0 0 2-1.6L21 7H6" /></svg><span class="cart-count"><asp:Label ID="lblHeaderItemCount" runat="server">0</asp:Label></span></a>
             </div>
-      </div>
-   </ItemTemplate>
-</asp:Repeater>
-<asp:Panel ID="pnlEmptyCart" runat="server" Visible="false" CssClass="p-5">
-    <p class="text-[#878787] text-[14px]">Your cart is empty.</p>
-</asp:Panel>
-                                                 
-                                           </div>
-                                           <div class="flex space-x-2 mt-3 justify-end mr-3 pb-3">
-                                             <asp:Button ID="btnContinueCart" runat="server" Text="CONTINUE" CssClass="save-cart-btn  inline-block px-8 py-3 bg-orange-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md  hover:shadow-lg  focus:shadow-lg focus:outline-none focus:ring-0  active:shadow-lg transition duration-150 ease-in-out" />
-                                         </div>
+            <label class="search-box mobile-search">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></svg>
+                <input type="search" aria-label="Search products" placeholder="Search products..." />
+            </label>
+        </div>
+    </header>
 
-                                        </div> 
-                                      </div> 
-                                </div>
-                                <div class="bg-white shadow rounded mb-3 mt-3">
-                                   <div class="payments-section">
-                                        <div class="px-5 py-3 bg-blue-600 text-white uppercase rounded-t-sm">
-                                             <p><span class="bg-white text-blue-500 py-1 px-2 font-medium rounded-[2px] text-[10px] mr-3">3</span><span class="inline-block text-[14px]">Payment Option</span></p>
-                                        </div>
-                                          <div class="paymen-option p-5">
-                                             
-                                                  <div>
-                                                    <div class="form-check">
-                                                      <input class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                                      <label class="form-check-label inline-block text-gray-800" for="flexRadioDefault1">
-                                                        Cach On Delivery
-                                                      </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                      <input class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                                                      <label class="form-check-label inline-block text-gray-800" for="flexRadioDefault2">
-                                                        Online
-                                                      </label>
-                                                    </div>
-                                                  </div>
-                                              
-                                          </div>
-                                        
-                                        <div class="flex space-x-2 mt-3 justify-end mr-3 pb-3">
-                                             <asp:Button ID="btnConfirmOrder" runat="server" Text="Confirm Order" CssClass="inline-block px-8 py-3 bg-orange-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md  hover:shadow-lg  focus:shadow-lg focus:outline-none focus:ring-0  active:shadow-lg transition duration-150 ease-in-out" />
-                                         </div>
+    <nav class="category-nav" aria-label="Product categories">
+        <div class="category-inner">
+            <a class="category-link" href="Filter.aspx">Groceries</a><a class="category-link" href="Filter.aspx">Home &amp; Kitchen</a><a class="category-link" href="Filter.aspx">Fashion</a><a class="category-link" href="Filter.aspx">Electronics</a><a class="category-link" href="Filter.aspx">Beauty</a>
+        </div>
+    </nav>
 
-                                      </div> 
-                                </div>
+    <div id="siteDrawer" class="drawer-backdrop menu-section" role="presentation">
+        <aside class="drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+            <div class="drawer-head"><span class="drawer-title">FlipShop</span><button type="button" class="icon-button closeNav" aria-label="Close navigation menu"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18" /></svg></button></div>
+            <div class="drawer-body"><p class="drawer-label">Shop categories</p><a class="drawer-link" href="Filter.aspx">Groceries</a><a class="drawer-link" href="Filter.aspx">Home &amp; Kitchen</a><a class="drawer-link" href="Filter.aspx">Fashion</a><a class="drawer-link" href="Filter.aspx">Electronics</a><a class="drawer-link" href="Filter.aspx">Beauty</a></div>
+        </aside>
+    </div>
+
+    <main class="page-shell">
+        <div class="page-intro">
+            <div><p class="eyebrow">Secure checkout</p><h1>Complete your order</h1><p class="intro-copy">Review your details before placing the order.</p></div>
+            <span class="item-pill"><asp:Label ID="lblIntroItemCount" runat="server">0</asp:Label> items</span>
+        </div>
+
+        <ol class="steps" aria-label="Checkout progress">
+            <li class="step login-progress-step"><span class="step-number">1</span><span class="step-label">Login</span></li>
+            <li class="step complete"><span class="step-number"><svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6" /></svg></span><span class="step-label">Delivery</span></li>
+            <li class="step review-progress-step"><span class="step-number">3</span><span class="step-label">Review</span></li>
+            <li class="step payment-progress-step"><span class="step-number">4</span><span class="step-label">Payment</span></li>
+        </ol>
+
+        <div class="checkout-grid">
+            <div class="checkout-main">
+                <section class="checkout-card login-check-section">
+                    <div class="section-head"><div class="section-title-wrap"><span class="section-number">1</span><h2 class="section-title">Login</h2></div><span class="complete-pill" style="display:none">Completed</span></div>
+                    <div class="section-body login-check">
+                        <div class="login-layout"><div><div class="info-row"><span class="info-label">Name</span><asp:Label ID="lblLoginName" runat="server" CssClass="info-value" Text="Not signed in"></asp:Label></div><div class="info-row"><span class="info-label">Phone</span><asp:Label ID="lblLoginPhone" runat="server" CssClass="info-value"></asp:Label></div><a class="account-link" href="#">Logout &amp; sign in to another account</a></div></div>
+                        <div class="button-row start"><button id="btnContinueCheckout" type="button" class="btn btn-action checkout-btn" onclick="completeLoginStep(this);">Continue Checkout</button></div>
+                    </div>
+                    <div class="section-body logined" style="display:none"><div class="login-layout"><div><asp:Label ID="lblLoginNameSaved" runat="server" CssClass="info-value"></asp:Label> <asp:Label ID="lblLoginPhoneSaved" runat="server"></asp:Label></div><span class="verified"><svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6" /></svg>Verified</span></div><div class="button-row"><asp:Button ID="btnChangeLogin" runat="server" Text="Change" CssClass="btn btn-outline login-change-btn" /></div></div>
+                </section>
+
+                <section class="checkout-card address-section">
+                    <div class="section-head"><div class="section-title-wrap"><span class="section-number complete"><svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6" /></svg></span><h2 class="section-title">Delivery Address</h2></div><span class="complete-pill">Completed</span></div>
+                    <asp:Panel ID="pnlDeliverySaved" runat="server" CssClass="section-body address-summary">
+                        <div class="address-content"><span class="address-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></svg></span><div><p class="address-name"><asp:Label ID="lblAddressNameSaved" runat="server"></asp:Label><span class="check"><svg class="check-icon" viewBox="0 0 24 24" aria-label="Selected"><path d="m5 12 4 4L19 6" /></svg></span></p><p class="address-line"><asp:Label ID="lblAddressFullSaved" runat="server"></asp:Label></p><p class="address-contact"><asp:Label ID="lblAddressPhoneSaved" runat="server"></asp:Label> &middot; <asp:Label ID="lblAddressEmailSaved" runat="server"></asp:Label></p></div></div>
+                        <asp:Button ID="btnChangeAddress" runat="server" Text="Change" OnClick="btnChangeAddress_Click" CssClass="btn btn-outline" />
+                    </asp:Panel>
+                    <asp:Panel ID="pnlDeliveryOptions" runat="server" Visible="false" CssClass="section-body">
+                        <div class="option-grid">
+                            <asp:LinkButton ID="btnAddAddressOption" runat="server" OnClick="btnAddAddressOption_Click" CssClass="option-button"><span class="choice-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg></span><span><span class="option-title">Add New Address</span><span class="option-copy">Use another delivery location</span></span></asp:LinkButton>
+                            <asp:LinkButton ID="btnEditDetailsOption" runat="server" OnClick="btnEditDetailsOption_Click" CssClass="option-button"><span class="choice-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4" /><path d="M5 21a7 7 0 0 1 14 0" /></svg></span><span><span class="option-title">Edit Details</span><span class="option-copy">Update name, phone or email</span></span></asp:LinkButton>
                         </div>
-                        <div class="w-[100%]  sm:w-[100%] md:w-[35%] lg:w-[30%] ml-0 sm:ml-0 md:ml-3 lg:ml-5 mb-5">
-                            <div class="bg-white shadow rounded">
-                                <div class="border-b p-5">
-                                    <p class=" font-medium">Payment Details</p>
-                                </div>
-                                 <div class="flex justify-between px-5 pt-3">
-                                     <span class="text-[#212121] text-[16px]">Price (<asp:Label ID="lblItemCount" runat="server">0</asp:Label> item(s))</span>
-                                     <span class="text-[#878787] text-[16px]">&#8377;<asp:Label ID="lblSubTotal" runat="server">0.00</asp:Label></span>
-                                 </div>
-                                 <div class="flex justify-between px-5 pt-3">
-                                    <span class="text-[#212121] text-[16px]">Discount</span>
-                                    <span class=" text-[#388e3c] text-[16px]">- &#8377;22</span>
-                                </div>
-                                <div class="flex justify-between px-5 py-3">
-                                    <span class="text-[#212121] text-[16px]">Delivery Charges</span>
-                                    <span class="text-[#878787] text-[16px]">&#8377;40</span>
-                                </div>
-                                <div class="flex justify-between px-5 py-3 border-t">
-                                    <span class=" font-semibold text-[#212121] text-[18px]">Total Amount</span>
-                                    <span class=" font-semibold text-[#212121] text-[18px]">&#8377;<asp:Label ID="lblGrandTotal" runat="server">0.00</asp:Label></span>
-                                </div>
-                            </div> 
-                           
-                        </div> 
-                     </div>
+                    </asp:Panel>
+                    <asp:Panel ID="pnlAddNewAddress" runat="server" Visible="false" CssClass="section-body">
+                        <div class="form-grid"><div class="field full"><label for="txtAddress">Address</label><asp:TextBox ID="txtAddress" runat="server" TextMode="MultiLine" Rows="3" placeholder="Flat/House No. Colony/Street No."></asp:TextBox></div></div>
+                        <div class="button-row"><asp:Button ID="btnSaveTempAddress" runat="server" Text="Save and Continue" OnClick="btnSaveTempAddress_Click" CssClass="btn btn-action" /></div>
+                    </asp:Panel>
+                    <asp:Panel ID="pnlEditDetails" runat="server" Visible="false" CssClass="section-body">
+                        <div class="form-grid"><div class="field"><label for="txtName">Name</label><asp:TextBox ID="txtName" runat="server" placeholder="Full Name"></asp:TextBox></div><div class="field"><label for="txtMobile">Phone</label><asp:TextBox ID="txtMobile" runat="server" TextMode="Phone" placeholder="Mobile Number"></asp:TextBox></div><div class="field full"><label for="txtEmail">Email</label><asp:TextBox ID="txtEmail" runat="server" TextMode="Email" placeholder="Email"></asp:TextBox></div></div>
+                        <div class="button-row"><asp:Button ID="btnSaveDetails" runat="server" Text="Save and Continue" OnClick="btnSaveDetails_Click" CssClass="btn btn-action" /></div>
+                    </asp:Panel>
+                </section>
+
+                <section class="checkout-card review-cart-section">
+                    <div class="section-head"><div class="section-title-wrap"><span class="section-number">3</span><h2 class="section-title">Review Order</h2></div><span class="complete-pill" style="display:none">Completed</span></div>
+                    <div class="section-body review-cart">
+                        <div class="product-list"><asp:Repeater ID="rptReviewCart" runat="server"><ItemTemplate><article class="cart-item"><div class="product-image"><img src='<%# ResolveUrl(string.IsNullOrEmpty(Convert.ToString(Eval("Image"))) ? "~/ProductPhotos/placeholder.jpg" : Convert.ToString(Eval("Image"))) %>' alt='<%# Eval("ProductName") %>' /></div><div><h3 class="product-name"><%# Eval("ProductName") %></h3><p class="product-price">&#8377;<%# Eval("Price", "{0:0.00}") %></p></div><span class="quantity">Qty: <%# Eval("Quantity") %></span></article></ItemTemplate></asp:Repeater></div>
+                        <asp:Panel ID="pnlEmptyCart" runat="server" Visible="false"><p class="empty-cart">Your cart is empty.</p></asp:Panel>
+                        <div class="button-row"><button id="btnContinueCart" type="button" class="btn btn-action save-cart-btn" onclick="completeReviewStep(this);">Continue</button></div>
+                    </div>
+                    <div class="section-body cartSave" style="display:none"><div class="login-layout"><asp:Label ID="lblReviewItemCount" runat="server" CssClass="info-value"></asp:Label><span class="verified"><svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6" /></svg>Reviewed</span></div><div class="button-row"><asp:Button ID="btnChangeCart" runat="server" Text="Change" CssClass="btn btn-outline cart-change-btn" /></div></div>
+                </section>
+
+                <section class="checkout-card payments-section">
+                    <div class="section-head"><div class="section-title-wrap"><span class="section-number">4</span><h2 class="section-title">Payment Option</h2></div><span class="complete-pill" style="display:none">Completed</span></div>
+                    <div class="section-body paymen-option">
+                        <div class="payment-options">
+                            <label class="payment-choice"><input type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="cash" /><span class="pay-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M7 10h10M7 14h5" /></svg></span><span class="payment-label">Cash On Delivery</span><span class="radio-mark"></span></label>
+                            <label class="payment-choice"><input type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="online" checked="checked" /><span class="pay-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 10h18" /></svg></span><span class="payment-label">Online</span><span class="radio-mark"></span></label>
+                        </div>
+                        <div class="button-row"><asp:Button ID="btnConfirmOrder" runat="server" Text="Confirm Order" OnClick="btnConfirmOrder_Click" CssClass="btn btn-action" /></div>
+                    </div>
+                </section>
             </div>
 
-     <!-- Footer -->
-     <footer class="bg-gray-200 mt-28">
-          <div class="footer max-w-[1120px] m-auto p-8">
-               <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
-                    <div>
-                         <p class="text-black font-bold text-[15px]">All Categories</p>
-                         <ul class="mt-3 text-xs text-gray-600">
-                              <li><a href="#" class="py-2 text-[14px] block hover:bg-gray-300 hover:pl-1">Grocery</a></li>
-                              <li><a href="#" class="py-2 text-[14px] block hover:bg-gray-300 hover:pl-1">Electronics</a></li>
-                              <li><a href="#" class="py-2 text-[14px] block hover:bg-gray-300 hover:pl-1">Fashion</a></li>
-                              <li><a href="#" class="py-2 text-[14px] block hover:bg-gray-300 hover:pl-1">Beauty</a></li>
-                         </ul>
-                    </div>
-                    <div>
-                         <p class="text-black font-bold text-[15px]">Popular Categories</p>
-                         <ul class="mt-3 text-xs text-gray-600">
-                              <li><a href="#" class="py-2 text-[14px] block hover:bg-gray-300 hover:pl-1">Staples</a></li>
-                              <li><a href="#" class="py-2 text-[14px] block hover:bg-gray-300 hover:pl-1">Beverages</a></li>
-                              <li><a href="#" class="py-2 text-[14px] block hover:bg-gray-300 hover:pl-1">Dairy & Bakery</a></li>
-                              <li><a href="#" class="py-2 text-[14px] block hover:bg-gray-300 hover:pl-1">Snacks & Branded Foods</a></li>
-                         </ul>
-                    </div>
-                    <div>
-                         <p class="text-black font-bold text-[15px] mt-3 sm:mt-3 md:mt-3 lg:mt-0">Customer Account</p>
-                         <ul class="mt-3 text-xs text-gray-600">
-                              <li><a href="#" class="py-2 text-[14px] block hover:bg-gray-300 hover:pl-1">My Account</a></li>
-                              <li><a href="#" class="py-2 text-[14px] block hover:bg-gray-300 hover:pl-1">My Orders</a></li>
-                              <li><a href="#" class="py-2 text-[14px] block hover:bg-gray-300 hover:pl-1">Wishlist</a></li>
-                              <li><a href="#" class="py-2 text-[14px] block hover:bg-gray-300 hover:pl-1">Payment Methods</a></li>
-                         </ul>
-                    </div>
-                    <div>
-                         <p class="text-black font-bold text-[15px] mt-3 sm:mt-3 md:mt-3 lg:mt-0">Contact Us</p>
-                         <div class="footer_contact mt-3">
-                              <div class="flex text-[14px] text-gray-600">
-                                   <span class="icn">
-                                        <?xml version="1.0" encoding="utf-8"?>
-                                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                   </span>
-                                  <div class="ml-2">
-                                   <p>Widgetify Inc. <br>Gadget Avenue Techtown <br>United States of America</p>
-                                  </div>
-                              </div>
-                              <div class="flex text-[14px] text-gray-600 py-2">
-                                   <span class="icn">
-                                        <?xml version="1.0" encoding="utf-8"?>
-                                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M17.3545 22.2323C15.3344 21.7262 11.1989 20.2993 7.44976 16.5502C3.70065 12.8011 2.2738 8.66559 1.76767 6.6455C1.47681 5.48459 2.00058 4.36434 2.88869 3.72997L5.21694 2.06693C6.57922 1.09388 8.47432 1.42407 9.42724 2.80051L10.893 4.91776C11.5152 5.8165 11.3006 7.0483 10.4111 7.68365L9.24234 8.51849C9.41923 9.1951 9.96939 10.5846 11.6924 12.3076C13.4154 14.0306 14.8049 14.5807 15.4815 14.7576L16.3163 13.5888C16.9517 12.6994 18.1835 12.4847 19.0822 13.1069L21.1995 14.5727C22.5759 15.5257 22.9061 17.4207 21.933 18.783L20.27 21.1113C19.6356 21.9994 18.5154 22.5232 17.3545 22.2323ZM8.86397 15.136C12.2734 18.5454 16.0358 19.8401 17.8405 20.2923C18.1043 20.3583 18.4232 20.2558 18.6425 19.9488L20.3056 17.6205C20.6299 17.1665 20.5199 16.5348 20.061 16.2171L17.9438 14.7513L17.0479 16.0056C16.6818 16.5182 16.0047 16.9202 15.2163 16.7501C14.2323 16.5378 12.4133 15.8569 10.2782 13.7218C8.1431 11.5867 7.46219 9.7677 7.24987 8.7837C7.07977 7.9953 7.48181 7.31821 7.99439 6.95208L9.24864 6.05618L7.78285 3.93893C7.46521 3.48011 6.83351 3.37005 6.37942 3.6944L4.05117 5.35744C3.74413 5.57675 3.64162 5.89565 3.70771 6.15943C4.15989 7.96418 5.45459 11.7266 8.86397 15.136Z" fill="#0F0F0F"/>
-                                        </svg>
-                                   </span>
-                                  <div class="ml-2">
-                                   <p>(987) 654-3210, (555) 123-4567</p>
-                                  </div>
-                              </div>
-                              <div class="flex text-[14px] text-gray-600 py-2">
-                                   <span class="icn">
-                                   <?xml version="1.0" encoding="utf-8"?>
-                                   <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                   <path d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                   <rect x="3" y="5" width="18" height="14" rx="2" stroke="#000000" stroke-width="2" stroke-linecap="round"/>
-                                   </svg>
-                                   </span>
-                                  <div class="ml-2">
-                                   <p>info@example.com</p>
-                                  </div>
-                              </div>
-                          </div>
-                    </div>
-               </div>
-          </div>
-          <div class="copy-right text-center pb-3 pt-3 border-t border-gray-300">
-               <p class="text-[13px]">© 2022 All rights reserved.</p>
-          </div>
-     </footer>
-      <script src="assets/js/jquery-3.6.0.min.js"></script>
-      <script src="assets/js/main.js"></script>
-     </div>
-    </form>
+            <aside class="summary-card">
+                <div class="summary-head"><h2>Payment Summary</h2><p>All prices include applicable taxes</p></div>
+                <dl class="summary-lines"><div class="summary-row"><dt>Price (<asp:Label ID="lblItemCount" runat="server">0</asp:Label> items)</dt><dd>&#8377;<asp:Label ID="lblSubTotal" runat="server">0.00</asp:Label></dd></div><div class="summary-row"><dt>Discount</dt><dd class="discount">&minus; &#8377;22</dd></div><div class="summary-row"><dt>Delivery Charges</dt><dd>&#8377;40</dd></div></dl>
+                <div class="summary-total"><span>Total Amount</span><strong>&#8377;<asp:Label ID="lblGrandTotal" runat="server">0.00</asp:Label></strong></div>
+                <div class="saving"><svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;vertical-align:-3px;margin-right:5px"><path d="m5 12 4 4L19 6" /></svg>Your discount has been applied</div>
+            </aside>
+        </div>
+    </main>
+
+    <script>
+        var CHECK_SVG = '<svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>';
+        function completeStep(button, sectionSelector, stepSelector, label) {
+            var section = document.querySelector(sectionSelector);
+            var progressStep = document.querySelector(stepSelector);
+            if (button) {
+                if (button.tagName === 'INPUT') { button.value = label; }
+                else { button.textContent = label; }
+                button.classList.add('btn-confirmed');
+                button.setAttribute('aria-disabled', 'true');
+                button.disabled = true;
+            }
+            if (section) {
+                section.classList.add('is-complete');
+                var number = section.querySelector('.section-number');
+                var pill = section.querySelector('.complete-pill');
+                if (number) number.innerHTML = CHECK_SVG;
+                if (pill) pill.style.display = '';
+            }
+            if (progressStep) {
+                progressStep.classList.add('complete');
+                var progressNumber = progressStep.querySelector('.step-number');
+                if (progressNumber) progressNumber.innerHTML = CHECK_SVG;
+            }
+            return false;
+        }
+        function completeLoginStep(button) {
+            return completeStep(button, '.login-check-section', '.login-progress-step', 'Login Confirmed');
+        }
+        function completeReviewStep(button) {
+            return completeStep(button, '.review-cart-section', '.review-progress-step', 'Order Reviewed');
+        }
+        /* Bind after the page is ready without relying on legacy site scripts. */
+        function bindProgressButton(id, handler) {
+            var button = document.getElementById(id);
+            if (!button || button.getAttribute('data-progress-bound') === 'true') return;
+            button.setAttribute('data-progress-bound', 'true');
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                handler(button);
+            }, true);
+        }
+        function bindCheckoutProgress() {
+            bindProgressButton('btnContinueCheckout', completeLoginStep);
+            bindProgressButton('btnContinueCart', completeReviewStep);
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', bindCheckoutProgress);
+        } else {
+            bindCheckoutProgress();
+        }
+
+        (function () {
+            var backdrop = document.getElementById('siteDrawer');
+            var openButton = document.querySelector('.openNav');
+            var closeButton = document.querySelector('.closeNav');
+            function setDrawer(open) {
+                if (!backdrop || !openButton) return;
+                backdrop.classList.toggle('open', open);
+                openButton.setAttribute('aria-expanded', open ? 'true' : 'false');
+                document.body.style.overflow = open ? 'hidden' : '';
+            }
+            if (openButton) openButton.addEventListener('click', function () { setDrawer(true); });
+            if (closeButton) closeButton.addEventListener('click', function () { setDrawer(false); });
+            if (backdrop) backdrop.addEventListener('click', function (event) { if (event.target === backdrop) setDrawer(false); });
+            document.addEventListener('keydown', function (event) { if (event.key === 'Escape') setDrawer(false); });
+        }());
+    </script>
+</form>
 </body>
 </html>
-
-

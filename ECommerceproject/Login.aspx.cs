@@ -44,9 +44,13 @@ namespace ECommerceproject
                 string count = dbobj.fn_scalar(checkQuery);
                 if (count != "0")
                 {
+                    string idQuery = "select [user id] from User_Reg where [username]='" + safeUsername +
+                                     "' and [password]='" + safePassword + "'";
+                    string userId = dbobj.fn_scalar(idQuery);
+                    Session["UserId"] = userId;
                     Session["Username"] = username;
                     Session["Role"] = "User";
-                    Response.Redirect("index.html");
+                    Response.Redirect("Home.aspx");
                 }
                 else
                 {

@@ -33,25 +33,52 @@ namespace ECommerceproject
                 return;
             }
 
-            string checkquery = "select count(*) from User_Reg where [username]='" + username + "'";
-            string count = dbobj.fn_scalar(checkquery);
-            if (count != "0")
+            try
             {
+                const string connectionString = @"server=DESKTOP-N272NOH\SQLEXPRESS;database=ECommerceProject;integrated security=true";
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlTransaction transaction = connection.BeginTransaction(IsolationLevel.Serializable))
+                    {
+                        using (SqlCommand check = new SqlCommand("SELECT COUNT(*) FROM User_Reg WITH (UPDLOCK, HOLDLOCK) WHERE [username]=@username", connection, transaction))
+                        {
+                            check.Parameters.Add("@username", SqlDbType.NVarChar, 256).Value = username;
+                            if (Convert.ToInt32(check.ExecuteScalar()) != 0)
+                            {
+                                transaction.Rollback();
+                                Label1.Visible = true;
+                                Label1.Text = "Username already exists";
+                                return;
+                            }
+                        }
+                        int userId;
+                        using (SqlCommand nextId = new SqlCommand("SELECT ISNULL(MAX([user id]),1000)+1 FROM User_Reg WITH (UPDLOCK, HOLDLOCK)", connection, transaction))
+                            userId = Convert.ToInt32(nextId.ExecuteScalar());
+                        using (SqlCommand insertUser = new SqlCommand("INSERT INTO User_Reg ([user id],[username],[Address],[[Phone no],[Email],[password],[confirm password]) VALUES (@id,@username,@address,@phone,@email,@password,@confirm)", connection, transaction))
+                        {
+                            insertUser.Parameters.Add("@id", SqlDbType.Int).Value = userId;
+                            insertUser.Parameters.Add("@username", SqlDbType.NVarChar, 256).Value = username;
+                            insertUser.Parameters.Add("@address", SqlDbType.NVarChar, 1000).Value = address;
+                            insertUser.Parameters.Add("@phone", SqlDbType.NVarChar, 50).Value = phone;
+                            insertUser.Parameters.Add("@email", SqlDbType.NVarChar, 256).Value = email;
+                            insertUser.Parameters.Add("@password", SqlDbType.NVarChar, 256).Value = password;
+                            insertUser.Parameters.Add("@confirm", SqlDbType.NVarChar, 256).Value = confirmpassword;
+                            insertUser.ExecuteNonQuery();
+                        }
+                        using (SqlCommand insertBank = new SqlCommand("INSERT INTO Bank (user_id, Balance) VALUES (@id, @balance)", connection, transaction))
+                        {
+                            insertBank.Parameters.Add("@id", SqlDbType.Int).Value = userId;
+                            insertBank.Parameters.Add("@balance", SqlDbType.Decimal).Value = 25000.00m;
+                            insertBank.Parameters["@balance"].Precision = 18;
+                            insertBank.Parameters["@balance"].Scale = 2;
+                            insertBank.ExecuteNonQuery();
+                        }
+                        transaction.Commit();
+                    }
+                }
                 Label1.Visible = true;
-                Label1.Text = "Username already exists";
-                return;
-            }
-            string idquery = "select isnull(max([user id]), 1000) + 1 from User_Reg";
-            string userid = dbobj.fn_scalar(idquery);
-            string query = "insert into User_Reg " +
-                           "([user id], [username], [Address], [[Phone no], [Email], [password], [confirm password]) " +
-                           "values(" + userid + ", '" + username + "', '" +
-                           address + "', '" + phone + "', '" + email + "', '" + password + "', '" + confirmpassword + "')";
-            int i = dbobj.fn_nonquery(query);
-            Label1.Visible = true;
-            if (i > 0)
-            {
-                Label1.Text = "Registration successful.  ";
+                Label1.Text = "Registration successful.";
                 TextBox1.Text = "";
                 TextBox2.Text = "";
                 TextBox3.Text = "";
@@ -59,9 +86,10 @@ namespace ECommerceproject
                 TextBox5.Text = "";
                 TextBox6.Text = "";
             }
-            else
+            catch (Exception)
             {
-                Label1.Text = "Registration failed";
+                Label1.Visible = true;
+                Label1.Text = "Registration failed. Please try again.";
             }
         }
 
