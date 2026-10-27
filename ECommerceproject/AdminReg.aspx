@@ -11,17 +11,23 @@
   <link href="./assets/css/custom.css" rel="stylesheet" />
   <link href="./assets/css/owlcarousel/owl.carousel.min.css" rel="stylesheet">
   <link href="./assets/css/owlcarousel/owl.theme.default.min.css" rel="stylesheet">
-  <title>Login Page</title>
+  <title>Admin Registration | FlipShop</title>
     <style type="text/css">
-        .auto-style1 {
-            width: 42px;
-        }
-        .auto-style2 {
-            width: 202px;
-        }
-        .auto-style3 {
-            width: 735px;
-        }
+        .ar-wrap{padding:56px 16px 50px;display:flex;justify-content:center}
+        .ar-card{box-sizing:border-box;width:100%;max-width:482px;background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:44px 35px 38px;font-family:Arial,Helvetica,sans-serif}
+        .ar-title{text-align:center;font-size:24px;font-weight:700;color:#111827;margin:0}
+        .ar-sub{text-align:center;font-size:14px;color:#4B5563;margin:10px 0 30px}
+        .ar-row{display:grid;grid-template-columns:156px minmax(0,1fr);align-items:center;padding:10px 0;border-bottom:1px solid #F1F2F4}
+        .ar-label{font-size:14px;font-weight:700;color:#111827}
+        .ar-input{box-sizing:border-box;width:100%;height:44px;padding:0 13px;font-size:15px;color:#111827;background:#F9FAFB;border:1px solid #D1D5DB;border-radius:6px;outline:none}
+        .ar-input::placeholder{color:#9CA3AF}
+        .ar-input:focus{background:#E8F0FE;border-color:#008ECC;box-shadow:0 0 0 3px rgba(0,142,204,.15)}
+        .ar-btn{display:block;width:100%;height:48px;margin-top:24px;background:#008ECC;color:#fff;font-size:15px;font-weight:700;border:0;border-radius:6px;cursor:pointer;transition:background .15s}
+        .ar-btn:hover{background:#0079AE}
+        .ar-btn:focus-visible{outline:3px solid rgba(0,142,204,.35);outline-offset:2px}
+        .ar-msg{display:block;margin-top:16px;padding:10px 12px;font-size:14px;text-align:center;color:#075985;background:#E0F2FE;border:1px solid #BAE6FD;border-radius:6px}
+        @media (max-width:520px){.ar-card{padding:32px 20px}.ar-row{grid-template-columns:1fr;gap:6px}}
+        @media (prefers-reduced-motion:reduce){.ar-btn{transition:none}}
     </style>
 </head>
 <body>
@@ -183,138 +189,21 @@
          </nav>
      </div>
      <!-- Login Section -->
-      
-
-<div style="padding-top: 150px; padding-bottom: 50px;">
-
-    <table class="w-full">
-        <tr>
-            <td>
-                <table class="w-full">
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style3">
-                            ADMIN&nbsp; REGISTRATION
-                        </td>
-                        <td class="text-center text-[40px] font-bold">
-                            &nbsp;</td>
-                        <td class="text-center text-[40px] font-bold">
-                            &nbsp;</td>
-                        <td class="text-center text-[40px] font-bold">
-                            &nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style3">
-                            &nbsp;</td>
-                        <td class="text-center text-[40px] font-bold">
-                            &nbsp;</td>
-                        <td class="text-center text-[40px] font-bold">
-                            &nbsp;</td>
-                        <td class="text-center text-[40px] font-bold">
-                            &nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style1">&nbsp;</td>
-                        <td class="auto-style3">
-                            <table class="w-full">
-                                <tr>
-                                    <td class="auto-style2">Admin name</td>
-                                    <td>
-                                        <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="auto-style2">&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td class="auto-style2">&nbsp;</td>
-                                    <td>
-                                        &nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td class="auto-style2">&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td class="auto-style2">Admin Email</td>
-                                    <td>
-                                        <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="auto-style2">&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td class="auto-style2">&nbsp;</td>
-                                    <td>
-                                        &nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td class="auto-style2">&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td class="auto-style2">&nbsp;</td>
-                                    <td>
-                                        <asp:Button ID="Button1" runat="server" BackColor="#FFFF66" BorderColor="#0066FF" OnClick="Button1_Click" Text="Register" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="auto-style2">&nbsp;</td>
-                                    <td>
-                                        <asp:Label ID="Label1" runat="server" BorderColor="#3333FF" Text="Label" Visible="False"></asp:Label>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-
+<div class="ar-wrap">
+  <div class="ar-card">
+    <h1 class="ar-title">Admin Registration</h1>
+    <p class="ar-sub">Register to manage the FlipShop store</p>
+    <div class="ar-row">
+      <label class="ar-label" for="TextBox1">Admin name</label>
+      <asp:TextBox ID="TextBox1" runat="server" ClientIDMode="Static" CssClass="ar-input" placeholder="Enter admin name"></asp:TextBox>
+    </div>
+    <div class="ar-row">
+      <label class="ar-label" for="TextBox4">Admin Email</label>
+      <asp:TextBox ID="TextBox4" runat="server" ClientIDMode="Static" CssClass="ar-input" TextMode="Email" placeholder="Enter admin email"></asp:TextBox>
+    </div>
+    <asp:Button ID="Button1" runat="server" CssClass="ar-btn" OnClick="Button1_Click" Text="Register" />
+    <asp:Label ID="Label1" runat="server" CssClass="ar-msg" Text="Label" Visible="False"></asp:Label>
+  </div>
 </div>
 
         </form>
@@ -404,4 +293,5 @@
     </form>
 </body>
 </html>
+
 
