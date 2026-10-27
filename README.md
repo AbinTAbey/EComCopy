@@ -73,7 +73,7 @@ Browse Products -> Product Details -> Shopping Cart
                                                       |
                                                       v
                                                OrderSuccess.aspx
-
+```
 Built as a learning project to explore full-stack web development with ASP.NET Web Forms, SQL Server, and WCF.
 
 Author
